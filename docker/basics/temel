@@ -1,3 +1,7 @@
 docker image ls
 
 docker ps
+
+docker run ubuntu:latest
+
+docker exec -it ubuntu /bin/bash
