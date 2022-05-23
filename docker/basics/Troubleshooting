@@ -1,0 +1,10 @@
+Docker desktop missing shared drives and advanced options for linux containers
+
+https://github.com/docker/for-win/issues/7143  solution --> https://github.com/docker/for-win/issues/7199
+
+C diskini volume eklemek için kullanırız.
+docker run -it -v c:/school/2020_summer_research/analysis_data/dir_of_data_and_notebook/:/home/jovyan/data ubuntu ls /home/jovyan/data
+Thanks Stephen https://github.com/stephen-turner
+
+__________________________________________________________________________________________________________________________________________________
+
