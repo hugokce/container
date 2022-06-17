@@ -1,0 +1,83 @@
+https://www.ibm.com/docs/en/doc/4.0.0?topic=SSQVNT_4.0.0/com.ibm.doserver.doc/DBOS/deployment/step-2--create-a-docker-composeyml-file.html
+
+
+
+version: '2.4'
+services:
+  mongo:
+    image: \${DECISIONBRAIN_REGISTRY}/mongo-non-root:\${DBOS_MONGO_VERSION}
+    restart: always
+    ports:
+    - 27017:27017
+    networks:
+    - optimserver  # This internal docker network can be configured at the end of the docker-compose.yml file.
+    volumes:
+    - mongovolume:/data/db  # Use volumes if you want your data to be persisted.
+    - mongovolume:/logs
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGODB_USER=optimserver
+      - MONGODB_PASSWORD=optimserver
+      - MONGODB_DATABASE=optimserver-master-db
+  rabbitmq:
+    image: \${DECISIONBRAIN_REGISTRY}/rabbitmq-stomp:\${DBOS_RABBITMQ_VERSION}
+    restart: always
+    ports:
+    - 5672:5672  #amqp port
+    - 61613:61613 #stomp port
+    - 15672:15672 # management web console
+    networks:
+    - optimserver
+    environment:
+    - RABBITMQ_DEFAULT_USER=decisionbrain  # Adapt the credentials to your needs
+    - RABBITMQ_DEFAULT_PASS=decisionbrain
+  master:
+    image: \${DECISIONBRAIN_REGISTRY}/dbos-master:\${DBOS_VERSION}  # Get the optimserver master application
+    ports:
+    - 8080:8080
+    networks:
+    - optimserver
+    volumes:
+    - ./data/logs:/logs
+    environment:
+    - SPRING_DATA_MONGODB_HOST=mongo # The different parameters are explained in a following step.
+    - SPRING_DATA_MONGODB_USERNAME=optimserver
+    - SPRING_DATA_MONGODB_PASSWORD=optimserver
+    - SPRING_DATA_MONGODB_ADMIN_USER=admin
+    - SPRING_DATA_MONGODB_ADMIN_PASSWORD=admin
+    - SPRING_RABBITMQ_HOST=rabbitmq
+    - JAVA_OPTS=-Xmx500m -Xms10m
+    - KEYCLOAK_AUTHSERVERURL=\${KEYCLOAK_AUTH_SERVER_URL}
+    - SPRING_PROFILES_ACTIVE=\${AUTH_PROFILE}
+    - OPTIMSERVER_JWTKEY=\${MASTER_JWT_KEY}
+    cpu_percent: 75
+    mem_limit: 500M
+    links:
+    - rabbitmq
+    - mongo
+  web-console:    # The web-console client is optional.
+    image: \${DECISIONBRAIN_REGISTRY}/dbos-web-ui-dashboard:\${DBOS_VERSION}
+    ports:
+    - 80:8080
+    networks:
+    - optimserver
+    volumes:
+    - ./data/logs:/logs
+    environment:
+    - OPTIMSERVER_MASTER_URL=http://master:8080/  # The URL refers to the master image
+    - KEYCLOAK_URL=\${KEYCLOAK_AUTH_SERVER_URL}  # The URL should be the public url of the keycloak image
+    - OPTIMSERVER_MASTER_DOC_URL=http://documentation:8080/  # The documentation URL
+    - SPRING_PROFILES_ACTIVE=\${AUTH_PROFILE}
+    links:
+    - master
+  documentation:    # The documentation is optional.
+    image: \${DECISIONBRAIN_REGISTRY}/dbos-documentation:\${DBOS_VERSION}
+    ports:
+      - 1313:8080
+    networks:
+      - optimserver
+volumes:
+  mongovolume:
+networks:
+  optimserver:
