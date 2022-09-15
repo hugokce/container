@@ -50,21 +50,56 @@ docker ps -a ile çalışan ve stop halde olan imajları gösterir.
 ContainerID  image                        command                                   created                         status           ports                names
 ContainerID  konteynerın üretildiği imaj  imaj çalıştırınca verilen komutu gösterir container ne zaman oluşturuldu  container durumu  tanımlanan portlar  konteyner adı
 
+Container Silmek için önce durdurulması gerekir
+docker rm vibrant_will ile container silinir.
+docker rm 45a ya da tam idsi docker rm 45adrgdfjkg9 girilir.
 
+nginx container oluşturma
+docker run -d --name ilkuygulama -p 80:80 nginx
+makine ayağa kalktıktan sonra browserda localhost yazarsak nginx bilgilerini görebiliriz.
+Terminalde bu ekrana bakmak için curl localhost yazılır.
 
+-d parametresi arka planda çalışmasına yarar.
+--name ilkuygulama ile containera isim verdik
+-p parametresi 80:80  soldaki local makinemiz sağdaki container makinesindeki portların konuşması için verilir.
+nginx de kullanmak istediğimiz imajı verir.
 
+docker pause ilkuygulama ile container duraklatılır.
+Status kolonunda Up ise çalışıyor, Paused ise duraklatıldı. Exited ise durduruldu anlamına gelmektedir. 
 
+pause kaldırmak için docker unpause ilkuygulama komutu kullanılır.
 
+docker stop ilkuygulama dedikten sonra docker ps dersek herhangi bir makine bilgisi gelmez.
 
+docker start ilkuygulama ile container tekrar başlatılabilir.
+docker rm ilkuygulama ile sileriz.
+Containerı otomatik olarak başlatmak için şu komutu kullanırız
 
+docker run -d -p 80:80 --restart always --name ilkuygulama nginx deriz
 
+Çoklu Container oluşturmak istersek;
+docker run -d --name sunucu1 alpine sleep 3000
+docker run -d --name sunucu2 alpine sleep 3000
+docker run -d --name sunucu2 alpine sleep 3000
 
+daha pratik bir yöntemle yapalım
+for number in {1..3}
+do 
+docker run -d --name sunucu${number} alpine sleep 3000
+done
 
+Tek satırda gösterirsek;
+for number in {1..3}; do docker run -d --name sunucu${number} alpine sleep 3000; done
 
+Tüm Containerları silmek istersek;
+docker ps -a -q ile idleri alınır
 
+docker rm $ (docker ps -a -q)
 
+docker rm -f $ {docker ps -a -q}  container çalışsa da -f force ile durdurup silmemizi sağlar
 
-
+Bölüm 3 
+Konteyner Çalışma Prensibi
 
 
 
