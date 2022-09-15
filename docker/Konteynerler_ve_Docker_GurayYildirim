@@ -23,24 +23,32 @@ sudo usermod -aG docker kullanıcıadı
 
 Kurulum istemeyenler için 4 saatlik kullanıma açık Play-with-Docker kullanılabilir.
 
+Bölüm 2
+cat Dockerfile ile içine bakalım
 
+FROM ubuntu
+RUN apt-get update
+RUN apt-get install -y cowsay
 
+cowsay isimli paket kurulacağını söylüyoruz.
+Dockerfile olduğu dizine gelip alttaki kodu giriyoruz . bulunduğumuz dizini belirtir.
+docker build -t ilkimaj . 
 
+docker image ls dediğimizde 
+repository tag           imageid           created              size kolonları gelir
+imajismi   sürümbilgisi  256bitlik değer   oluşturulma tarihi   imaj boyutu
 
+İmajı çalıştıralım
+docker run ilkimaj /usr/games/cowsay -f 'tux' 'Docker'
+cowsay çizimler yapıp hareketli olmasını sağlar.
 
+cowsay kullanıp -f parametresi ile tux kullanıp Docker yazmasını söyledik
 
+docker ps ile çalışan imajları gösterir.
 
-
-
-
-
-
-
-
-
-
-
-
+docker ps -a ile çalışan ve stop halde olan imajları gösterir.
+ContainerID  image                        command                                   created                         status           ports                names
+ContainerID  konteynerın üretildiği imaj  imaj çalıştırınca verilen komutu gösterir container ne zaman oluşturuldu  container durumu  tanımlanan portlar  konteyner adı
 
 
 
