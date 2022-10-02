@@ -101,9 +101,21 @@ docker rm -f $ {docker ps -a -q}  container çalışsa da -f force ile durdurup 
 Bölüm 3 
 Konteyner Çalışma Prensibi
 
+Konteyner Yapısı:
+Konteynerlar imajlardan oluşur. İmajlar konteyner çalıştığında içinde olacak dosyaları barındırır. Bu dosyalar çalıştırılacak programlar,
+kullandıkları kütüphaneler, ayar dosyalar içerebilir. Haliyle imajlar konteynerın amacını ve içindekileri tanımlamaya yararken, konteyner 
+başlatılırken hangi çalıştırılabilir dosyanın hangi parametrelerle kullanılacağını da belirler. Bunun ardından bir konteyner sisteminin 
+yapması gereken izole bir yapıda bu imaj içerisinden belirtilen çalıştırılabilir dosyayı başlatmak olacaktır. 
 
+Namespace Kavramı:
+Namespace isim alanlarının konteynerların en temel yapı taşlarını oluşturduğunu söyleyebiliriz. Namespaceler istediğimiz süreç veya süreçlerin
+istediğimiz kısımlarının izole olarak başlamasını sağlar. 
+Örneğin 2 ağ ismi alanı oluşturup ikisinde farklı programlar başlatırsak bu programların ikisinin de ağ yapıları birbirinden izole şekilde oluşur.
+Birinde gözüken internet arayüzü diğerinde biz istemediğimiz sürece gözükmez. Her biri kendi IP adresi olduğunu düşünür ve bu IP'ler üzerinden iki
+bilgisayar iletişim kurar gibi iletişim kurabilirler. Haliyle ağ yapılarını birbirinden ayırdığımız iki isim alanı oluşturuyoruz ve izolasyonu bu
+şekilde sağlayabiliyoruz.
 
-
+Ağ isim alanı (network namespace)
 
 
 
