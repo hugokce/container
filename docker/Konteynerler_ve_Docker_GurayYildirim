@@ -149,15 +149,76 @@ Artık ana makinemizle ağ isim alanını birbirine bağlamış olduk.
 şimdi ping atalım bu adrese
 
 sudo ip netns exec izole-ns ping 37.187.38.209 dedik
+Ağ bağlanamadık. Network is unreachable verdi. Şimdi IP adresi atayalım  10.0.5.0/24 alt ağını kullanalım.
 
+sudo ip addr add 10.0.5.1/24 dev sanal1
+ip a dersek inet karşısında 10.0.5.1/24 karşımıza çıkar.
 
+Ağ isim alanı içerisindeki ucuna da 10.0.5.2 adresini verelim.
+sudo ip netns exec izole-ns ip addr add 10.0.5.2/24 dev sanal0
+sudo ip netns exec izole-ns ip addr  komutuyla inet karşısına 10.0.5.2 verdi
+Bu arayüzler şu anda DOWN görünüyor. Şimdi onlar up yapalım
+sudo ip netns exec izole-ns ip link set sanal0 up
+sudo ip link set sanal1 up
+Şimdi ping atalım
+sudo ip netns exec izole-ns ping 10.0.5.2  ping döndü
 
+veth kablosunun diğer ucuna ping atalım
+sudo ip netns exec izole-ns ping 10.0.5.1 
 
+Loopbacki açmak istersek
+sudo ip netns exec izole-ns ip link set lo up
 
+Dışarıdan yine bir ping deneyelim
+sudo ip netns exec izole-ns ping 37.187.38.209  
+network is unreachable yine gidemedik.
 
+Şimdi isim alanına ağ geçidi ekleyelim ki bu ağ geçidi isim alanının dışarıya açılabilmesi için bağladığımız sanal ethernet arayüzünün diğer ucu olacaktır. 
+Sanal ağ arayüzleri aslında bir ethernet kablosu gibi davrandığından bu kablonun bir ucunu ağ isim alanına bağlayıp orada bir adres vermiş olsak da 
+diğer ucuna verdiğimiz IP adresi, ping denemesi yapabilmek içindir. 
+Şimdi sanal ethernetlerin bilgisayarımızda görünen kısmındaki IP adresini silelim.
+sudo ip addr delete 10.0.5.1/24 dev sanal1
 
+Bu kabloyu ve diğer kabloları birbirine bağlamak için bridge kullanacağız. Bridge yani köprü ağları sanal network  switchleri gibi bir işlev görür. 
+Yani istediğimiz kabloları bridge üzerine takabiliriz. Şimdi bir köprü arayüz oluşturalım
 
+sudo ip link add kopru0 type bridge
+ip a ile bakalım
 
+Şimdi sanal ethernet arayüzünün sanal1 isimli ucunu kopru0a bağlayalım.
+sudo ip link set sanal1 master kopru0
+
+ip a ile bakarsak sanal1in master olarak kopru0'ı görürüz
+
+Şimdi kopru0'a az önce sildiğimiz adresi verelim
+sudo ip addr add 10.0.5.1/24 dev kopru0
+
+sudo ip link set kopru0 up    arayüzü açtık
+ip a deyip bakalım
+
+Sanal1 arayüzünü açalım
+ip link set sanal1 up 
+Şimdi köprüsü pingleyelim
+sudo ip netns exec izole-ns ping 10.0.5.1
+
+Uzak makineye ping atalım
+sudo ip netns exec izole-ns ping 37.137.38.290
+yine unreachable aldık
+Varsayılan ağ geçidi sanal ethernet arayüzünün bağlı olduğu köprü arayüzü olacağı için onu ağ isim alanına ekleyelim.
+sudo ip netns exec izole-ns ip route add default via 10.0.5.1
+
+Yine ping atalım
+sudo ip netns exec izole-ns ping 37.137.38.290 bu sefer gitti.
+
+Linux çekirdeğinde IP yönlendirmesini açalım
+echo '1' | sudo tee /proc/sys/net/ipv4/ip_forward 
+
+sudo iptables -t nat -A POSTROUTING -o kopru0 -j MASQUERADE 
+sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE 
+
+sudo ip netns exec izole-ns ping 37.137.38.290 bu sefer gitti.
+
+PID İsim Alanları:
 
 
 
