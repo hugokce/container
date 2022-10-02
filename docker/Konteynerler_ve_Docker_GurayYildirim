@@ -117,16 +117,38 @@ bilgisayar iletişim kurar gibi iletişim kurabilirler. Haliyle ağ yapıların�
 
 Ağ isim alanı (network namespace)
 
+Ağ isim alanı oluşturmak için ip komutunun netns alt komutunu kullanabiliyoruz. Ağ isim alanları içerisinde bulunan programların bilgisayarın fiziksel
+ağ altyapısı konusunda fikri olmadan kendi ağ yapılarına sahipmiş gibi çalıştırır. 
 
+sudo ip netns add izole-ns   şeklinde ağ isim alanı oluşturulur.
 
+sudo ip netns ls ile oluşturduğumuz isim alanlarını görebiliriz.
 
+Şimdi bu isim alanında bir program çalıştıralım
+sudo ip netns exec izole-ns ip addr
+Sadece loopback arayüzü geldi karşımıza. 
+Loopback DOWN olarak gözüküyor ve açmak istersek
+sudo ip netns exec izole-ns ip link set lo up   komutu ile açabiliriz.
+Şimdi 127.0.0.1 adresini aldı ve UP olarak görülüyor.
+Bu izole ağ isim alanının internete çıkmasına yardımcı olmaz. Internete çıkmasını sağlamak için öncelikle sanal bir ethernet çifti oluşturalım.
+Bu çift ethernet kablosunun 2 ucunu taktığımız kartları temsil ediyor gibi düşünebiliriz. 
+Yalnız hem isim alanı hem de oluşturacağımız çift sanal olduğu için uygularken iyice anlayıp uygulamamız önemli. Bu sanal ethernet çiftini oluşturmak için
+ip komutunda yeni bir tane eklemek istediğimizi şu şekilde söyleriz.
 
+sudo ip link add sanal0 type veth peer name sanal1
 
+ip addr dersek görebiliriz.
 
+Bu çıktıya göre sanal0 ve sanal1 arayüzlerinin yazılış sıraları arayüzlerin hangi yönde çalışacağını belirlediği için öneme sahiptir. 
 
+sudo ip link set sanal0 netns izole-ns komutu ile sanal arayüzünü isim ağ alanına atamış olduk. 
+ip a diyelim
 
+sudo ip netns exec izole-ns ip a diyelim
+Artık ana makinemizle ağ isim alanını birbirine bağlamış olduk. 
+şimdi ping atalım bu adrese
 
-
+sudo ip netns exec izole-ns ping 37.187.38.209 dedik
 
 
 
