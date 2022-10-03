@@ -1,1 +1,16 @@
+
+
+
+
+
+Kaynak
+
 https://ravenfo.com/2021/09/04/kafkaconnect-kafka-cassandra-entegrasyonu/
+
+https://hub.docker.com/r/debezium/connect
+
+https://docs.datastax.com/en/kafka/doc/kafka/kafkaIntro.html
+
+https://docs.lenses.io/4.2/integrations/connectors/stream-reactor/sinks/cassandrasinkconnector/
+
+http://cloudurable.com/blog/kafka-tutorial-kafka-from-command-line/index.html
