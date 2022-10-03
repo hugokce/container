@@ -14,3 +14,9 @@ https://docs.datastax.com/en/kafka/doc/kafka/kafkaIntro.html
 https://docs.lenses.io/4.2/integrations/connectors/stream-reactor/sinks/cassandrasinkconnector/
 
 http://cloudurable.com/blog/kafka-tutorial-kafka-from-command-line/index.html
+
+https://digitalis.io/blog/apache-cassandra/getting-started-with-kafka-cassandra-connector/
+
+https://medium.com/sfu-cspmp/building-data-pipeline-kafka-docker-4d2a6cfc92ca
+
+https://learn.microsoft.com/tr-tr/azure/cosmos-db/cassandra/kafka-connect
