@@ -220,9 +220,64 @@ sudo ip netns exec izole-ns ping 37.137.38.290 bu sefer gitti.
 
 PID İsim Alanları:
 
+Çekirdeğin başlattığı başlangıç süreci (init process)'e süreç numarası (PID) olarak 1 verir. Daha sonra başlattığımız süreçlerin init sürecinin child
+süreçleri arasında yer aldığını da dikkate alalım ve init açılışı tamamlandıktan sonra başlatacağımız herhangi bir sürecin PID değerinin 1'den yüksek 
+olacağı sonucuna varabiliriz. 
 
+python &> /dev/null & 
+ps aux | grep pytho[n]
+Bunun sonucunda 3765 verdi PID olarak.
 
+kill -9 3765  verip kill edelim.
+ps aux | grep pytho[n] ile tekrar bakalım
 
+sudo unshare --fork --pid bash  ile yeni terminal açalım
+Burada python çalıştıralım
+python &> /dev/null & 
+15 verdi PID'yi.
+python &> /dev/null & 
+tekrar çalıştırdık
+11485 verdi PID olarak.
+
+kill -9 11485 dersek no such process diyor.
+kill -9 15 dersek  killed dedi
+Bu nasıl kill oldu bakalım
+unshare komutuna verdiğimiz parametreler ile yeni bir PID isim alanı oluşturduk. Bu isim alanı içinde isim alanından bağımsız olarak PID numaraları 1'den 
+başlayıp devam eder. Burada çalışan ilk program kendisini o anki 1 numaralı süreç yani init süreci olarak görecektir. Python komutunu arka planda başlatan
+komut bu PID isim alanı içinde olan PIB numarasını verdi (15i). Sistemdeki ana PID isim alanından baktığımızda ise bunu tamamen farklı bir sayı olarak
+görecektir. Bu örnekte ps komutu proc dosya sisteminden beslendiği için istediğimiz numarayı göremedik. Çünkü PID isim alanına geçerken proc dizini ana
+makinedeki olarak kaldı. Bunun kötü yanı ps komutu sistemdeki ana isim alanının /proc dizininden elde ettiği sonuçları getirmiş oldu. Bize gerekli olan 
+ise bulunduğumuz isim alanı içinde bir proc dosya sistemi bağlamak. Bunu yapalım
+mount -t proc proc /proc
+ps diyelim şimdi. bash'in PID'si 1 olarak geldi. Yani her PID isim alanının kendi numaralarına sahip olmasındandır. 
+python deyip çalıştıralım yeni bir terminal açalım. Bu terminal ana PID isim alanında olacağı için oradan yapacağımız sorgulamalar burada 1 numara ile 
+gördüğümüz PID'nin sistem genellikle esas değerini almamıza yardımcı olacak.
+python aux | grep pytho[n] hata aldık. Bunun sebebi PID isim alanı içinde ana sistemin proc dosya sistemine müdahale etmemizden kaynaklı. Bu sebeple
+ana sistemdeki proc'u tekrardan bağlayıp bakalım.
+sudo mount -t proc proc /proc
+ps aux | grep pytho[n]
+11681 PID'ini gördük bu başlattığımız python sürecine ait olduğunu görüyoruz. 
+Linux çekirdeği PID isim alanları için isim alanı içinde ve sistem genelinde yer alan numaralar arasında bir haritalama(mapping) işlemi uygular. 
+Dolayısıyla ana sistemimizden tüm isim alanları içerisindeki süreçleri görebilirken, isim alanları içinde sadece o isim alanına dahil süreçleri görürüz.
+
+Ana sistemle ilgili python kabuğunu sonlandırırsak isim alanı içerisinde bunun etkisini görebiliriz. Şimdi bunu denemek için ikinci açtığımız ve ana PID
+isim alanında bash kabuğu üzerinden bu pythonu sonlandıralım.
+sudo kill -9 11681
+Böylece python kapanır. Ana sistemden PID isim alanına müdahale edebildiğimizi gördük. PID isim alanından çıkalım sonra unshare komutunu yeni bir
+parametre ekleyip tekrar verelim
+sudo unshare --fork --pid --mount-proc bash
+
+--mount-proc parametresi procfs'in otomatik olarak bağlanmasını sağlar. --fork isim alanı oluştururken çalıştırılacak programdan önce fork işlemi yapar. 
+Bu isim alanı içinde ve sistem genelinde ps yazarak sorun kalmadığını görürüz.
+ps aux diyelim
+
+Bu işlem sırasında sadece proc dosya sistemi otomatik olarak bağlandı. Bu tür işlemleri daha iyi kontrol edebilmek için mount isim alanlarını kullanabiliriz.
+Bu sayede şu ana kadar yaptıklarımızın bir benzerini yaptığımız bağlama işlemlerini izole etmek için de kullanabiliriz. Yeni bir mount isim alanı oluşturmak için
+unshare komutuna --mount parametresini eklememiz yeterli olacak.
+sudo unshare --mount --fork --pid bash
+mount -t proc proc /proc
+
+Kullanıcı isim alanları:
 
 
 
