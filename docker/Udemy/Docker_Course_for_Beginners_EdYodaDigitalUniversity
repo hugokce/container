@@ -1,0 +1,257 @@
+https://www.udemy.com/course/docker-container-course-for-beginners/learn/lecture/20397067?start=15#overview
+
+1,5 saat
+
+
+https://www.udemy.com/course/docker-container-course-for-beginners/learn/lecture/20397067?start=15#overview
+
+zekelabs.com
+
+https://github.com/awantik/pyspark-learning
+çok eğitim var
+https://www.zekelabs.com/courses/spark-with-python-training-in-bangalore/
+
+https://github.com/docker/docker-ce
+
+AWS'de linux makine oluşturdu
+
+sudo su ile roota geçtik
+yum install docker
+kurulduktan sonra başlatalım
+service docker start
+service docker status ile duruma bakalım
+docker run hello-world   başlatalım
+clienttan komut gidince image varsa ona gider 
+image yoksa registryye gider önce. EA_2 bakılabilir
+hello-world imagelarda olmayınca gidip getiriyor.
+docker ps -a  ile imageları görürüz
+hello-world bir imagetır
+ashishrpandey  kullanıcı adı docker hubdaki
+
+docker image ls dedik
+hello-world geldi sadece şimdilik
+
+komutla çekmek istesek:
+docker pull hello-world
+
+docker ps -a  dersek çalışan image görüntülenir
+
+service docker status deyip çalışma durumunu görürüz
+
+docker images ile imageları görürüz 
+docker container ls -a dersek yine sadece hello-world geldi 
+
+İlk ubuntu container oluşturalım
+AWS makinesinde iken uname -a dersek AWS makinesinin adını öğreniriz
+
+yine sudo su ile roota geçtik
+
+önce docker çalışıyor mu bakalım
+service docker status
+docker images bakalım
+
+docker pull ubuntu dedik önce
+docker run ubuntu dedik bundan vazgeçip üstteki kodu yazdık
+docker images deyince  ubuntuyu gördük
+
+ubuntu container içine girmek istersek
+docker run -it ubuntu:latest bash
+i interactive t terminal demektir
+latest son version . bunu vermesek de latest alacak 
+bash ile içinde komut yazabileceğiz
+EA_5 ile görünebilir içine girdik
+içine apt dedik
+apt install vim dedik içinde iken birşey olmadı o yüzden
+apt update dedik
+şimdi apt install vim dedik
+
+vim mynotes.txt dersek 
+içine This is my file inside the container 
+
+container dışında ps -eaf dersek birçok proses görürüz
+container içinde ps -eaf dersek 2 prosesi görürüz
+biri bash diğeri ps -eaf şimdi çalıştırdığımız kod yani
+şimdi exit ile çıktık containerdan
+docker ps -a dedik
+
+latest olanın container idsini aldık ve çalıştırdık
+docker start 377c68a65b76 
+şimdi docker ps deyince container geldi 
+içine girmek istersek 
+docker attach 377c68a65b76 deriz
+containerdan çıkmak istersek CTRL+P CTRL+Q dersek read escape sequence der bize
+sonra çıkarız 
+docker ps dediğimizde containerın çalıştığını görürüz
+sonra yine docker attach beautiful_gates  yani adını yazarsak yine içine gireriz
+
+Basic Docker Container Commands:
+docker container --help
+docker container ls
+şimdi ubuntu beautiful_gates isimli containerın adını değiştirelim
+docker rename beautiful_gates ubuntu_container
+docker container ls deyince yeni adıyla gelir
+docker stats ubuntu_container deyince makine hakkında cpu, memory bilgileri verir
+CTRL+C ile bu bilgileri veren ekrandan çıkarız
+docker logs ubuntu_container dersek baştan sona tüm kodları gösterir.
+aradaki işlemleri de gösterir
+bu bilgileri bir dosyaya atmak istersek
+docker logs ubuntu_container > container.log
+klasör içindeki dosyadan izlenebilir sakladım.
+vim container.log ile içine bakabiliriz
+docker stop ubuntu_container ile durdurabiliriz
+docker container ls dediğimizde artık görünmüyor çünkü durdu
+docker container ls -a ile hepsini görebilriiz açık kapalı
+docker start ubuntu_container  ile başlatalım sonra 
+docker attach ubuntu_container dersek içine gireriz
+içindeyken whoami dedik root dedi
+CTRL+P CTRLQ ile çıktı cmdye
+şimdi durduralım docker stop ubuntu_container
+silmek istersek önce bakalım docker ps -a
+docker rm ubuntu_container
+docker ps -a dersek artık olmadığını görebiliriz
+docker rm jolly_villani 
+docker ps -a
+docker inspect containername  dersek
+şimdi hoca sildiği için tüm containerları tekrar çağıralım bir tane
+docker run -it ubuntu bash  yeni bir tane oluştu
+docker ps 
+docker inspect 377c68a65b76  dersek
+bu bilgileri kendim 377c68a65b76_inspect.txt dosyasına sakladım bakılabilir
+bunun içinde yer alan ID bizim docker ps  dediğimizde çıkan id bunun bir kısmıdır
+docker container inspect ubuntu_container dersek yine bilgileri verir bize
+
+Basic Docker image Commands :
+docker images
+docker image ls   burada image dedik dikkat
+docker image --help
+build komutunu Dockerfile ile image oluşturmada kullanırız
+docker images 
+docker inspect ubuntu:latest
+docker image pull centos:latest  şimdi pull ettik imageı
+docker image ls dersek centosunda geldiğini görürüz
+bu centos imageı silmek istersek
+docker rmi imageid
+docker rmi 
+sonra bakalım silindi mi 
+docker images 
+diğer containerı silmek istersek conflict veriyor
+docker rmi imageid  ubuntu için olan
+böyle bir sorunla karşılaşırsak önce  bu containerı durdurmamız gerekli
+docker stop containerid
+halen silmiyorsa force etmek lazım
+docker rmi -f containerid
+docker container rm containerid
+docker rmi containerid  ile image silinir artık
+docker images deyince artık olmadığını görürüz
+docker image --help
+docker images deriz şimdi tarball olarak saklamak istersek
+docker save --help deriz
+docker save -o hello-world.tar hello-world:latest bende bu olmadığı için ubuntuyu
+yapıyorum
+docker save -o ubuntu_20220130.tar ubuntu:latest deriz  dosyada var sakladım
+artık imageı silebiliriz
+docker images 
+docekr rmi -f d13c942271d6  dedim sildim
+artık gelmiyor
+az önce oluşturduğumuz tar dosyasından içeri load edelim
+docker load -i ubuntu_20220130.tar
+docker images deyince yüklenen dosyayı gördük
+Taglere bakalım
+eğitimde docker tag hello_world:latest hello_world:v1 
+docker tag ubuntu:latest ubuntu:v1  bu şekilde ikinci bir image oluştu
+docker images deyince gelir
+eğitimde docker tag hello_world:latest hello:v2
+docker tag ubuntu:latest ub:v2
+docker images
+şimdi ilk docker imageı silelim
+docker rmi ubuntu:latest  bunu silince iki tane kaldı
+docker images
+
+docker image prune  dersek kullanılmayan imageları siler
+
+Creating docker image without dockerfile:
+docker run -it ubuntu:latest bash
+vim dedik gelmedi o halde kuralım normal olarak
+apt install vim
+apt update
+şimdi tekrar kuralım
+apt install vim
+şimdi içindeyken ls attık
+vim myfile.txt deyip dosya oluşturduk
+içine şunu yazalım  i ile yazma moduna geçelim
+This is a file in ubuntu container. 
+:wq deyip kaydedip çıkalım
+cat myfile.txt ile içine baktım
+şimdi exit ile docker imagedan çıkalım
+docker images
+docker ps -a dedik
+docker commit bae28951dba9  yeni oluşturduğumuz bu. 
+docker images dedik bu commit ettiğimiz repository ve tah kısmı none geldi
+none olanın imageidsi ebfe298fbd8a  
+docker tag ebfe298fbd8a ashishrpandey/ubuntuvimedyoda:v1 eğitimdeki not
+benim makinede
+docker tag ebfe298fbd8a hugokce/ubuntuvim:v1
+docker images  repository olarak hugokce vs geldi
+şimdi docker login ile bağlanalım
+username ve password sordu girince succeeded dedi
+şimdi push edelim
+docker push ashishrpandey/ubuntuvimedyoda:v1 
+docker push hugokce/ubuntuvim:v1  artık dockerda image eklendi
+docker rmi hugokce/ubuntuvim:v1  dersek
+docker images yapınca image kaybolur
+diğer imageı da silelim
+docker rmi 94e814e2efa8  
+docker run -it ashishrpandey/ubuntuvimedyoda:v1 bash
+bu olmadığı için yani silmiştik tekrar bizim repositorymizden çeker
+docker run -it hugokce@ubuntuvim:v1
+bunu çekince direk docker image içine girer ve artık ls atabiliriz
+Şimdi exit edip çıkalım
+
+Basic Dockerfile directives:
+ls attı kendi makinesinde dockerfile ve hello.py geldi
+vim ile dockerfile açtı
+
+Containerizing using a dockerfile:
+yine kendi makinesinde cd myapp/ dedi
+vim hello.py ile içine baktık print(helloworld) çıktı
+vim dockerfile dedi
+İçinde şu kodlar var
+
+FROM python:2.7-slim
+WORKDIR /app
+ADD . /app
+EXPOSE 80
+CMD ["python", "hello.py"]
+
+cat hello.py deyince
+print("Hello World")  gelir
+
+şimdi build edelim
+docker build .   dedik
+Successfully derse oluşmuş demektir
+docker images deyince gelir ama repo ve tag kısmı none olarak gelir
+şimdi isim verelim
+docker tag 76611b5fdb55 myapp:latest
+docker images
+docker run myapp:latest dedik Hello World döndü.
+ls atınca dockerfile ve hello.py dosyaları var
+python hello.py dersek yine hello world döner
+
+son olarak docker build --help deyip ne var bakalım
+
+eğitim bitti 1,5 saat
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
