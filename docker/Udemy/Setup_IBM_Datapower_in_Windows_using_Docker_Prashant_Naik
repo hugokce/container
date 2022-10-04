@@ -4,28 +4,30 @@ https://www.udemy.com/course/setup-ibm-datapower-in-windows-using-docker/learn/l
 
 nkptech hocanın docker adı
 Docker API içinde Advanced kısmında cpu memory ayarlanabilir
-powershellde
-docker -v  dedik
+powershellde docker -v  dedik
 
-IBM DAtapower configure edelim
+IBM Datapower configure edelim
 docker images
-ibmcom/datapower hubta vars
+ibmcom/datapower hubta var.
 şimdi çekelim
 docker pull ibmcom/datapower
 böylece latest olan gelir
 docker images 
+
 docker rmi imageid dersek sileriz
 docker images
+
 tekrar çekelim
 docker pull ibmcom/datapower
 docker images
+
 şimdi windowsta powershell içinde
 cd programdata 
 cd docker
 ls dersek birşey gelmez.
 Docker ayarlardan Switch to Windows Containers dersek
 şimdi ls dersek docker altında birçok dosya oluşur
-EA_9 ile görünebilir
+
 cd config dersek daemon.json ve key.json gelir
 
 docker images
@@ -40,13 +42,14 @@ idg# gelince con dedik
 global configuration modea geçti
 sonra web-mgmt 0 9099 deriz
 successfully started dedi
+
 sonra browserdan localhost:9099 dedik
 localhost:9099/dp/login ekranı geldi
 dp data power demek
 admin admin ile gireriz
 Şimdi console açıldı
 
-38 dakikada bitti 
+tamamlandı 
 
 
 
