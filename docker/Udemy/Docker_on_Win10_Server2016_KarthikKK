@@ -1,0 +1,308 @@
+https://www.udemy.com/course/docker-on-windows/learn/lecture/6359464?start=0#overview
+2,5 saat
+
+Windows Server 2016  ve Win10 karşılaştırması var
+Minilinux kullanımı
+
+container kernel = Host kernel -->win10 için
+
+screenshot alınamıyordu
+Firefox ile çözüldü. Firefoxtan screenshot alınabiliyor
+
+Windows 10 desktop kurmuş sanal makineye
+Powershell açtık docker info dedik
+
+Docker Hızlandırma:
+powershelden docker info dedik
+Kernel Version: 5.10.16.3-microsoft-standard-WSL2  baktık
+Operating System: Docker Desktop
+
+OSType: linux
+ Architecture: x86_64
+ CPUs: 8
+ Total Memory: 12.32GiB
+ Name: docker-desktop
+powershell içinde
+docker images
+docker ps
+docker pull alpine
+docker images
+docker run alpine sh    
+docker ps -a dersek sh ile başladığını görürüz
+docker run -d -it alpine sh
+d detach demektir
+docker ps -a  ikinci image da çalıştı gördük
+docker run -it alpine sh  şimdi içine gireriz
+ls
+cd etc
+ls
+ps dersek içinde 2 proses gösterir sh ve ps
+exit dedik çıktık
+docker ps -a
+docker run -it --name=MyLinux alpine sh
+içine girdik
+başka bir powershell açıp docker ps -a dersek
+artık imageın MyLinux ile adlandırıldığını görürüz
+docker stop MyLinux 
+
+--detach or -d, means that a Docker container runs in the 
+background of your terminal. It does not receive input or 
+display output.
+docker run -d IMAGE
+If you run containers in the background, you can find out 
+their details using docker ps and then reattach your terminal 
+to its input and output.
+
+docker rm MyLinux  ile sileriz
+docker ps -a dersek MyLinux gelmez
+
+Making Win container for Docker to Work
+Seçeneklerdeki Switch to Windows containers seçersek
+Switch etmezsek EA_16daki hatayı alırız
+
+şimdi hubtan microsoft dedik
+microsoft/nanoserver çekmeye çalışalım
+docker pull microsoft/nanoserver dedik
+Şimdi switch etmezsek unknown blob der
+
+şimdi edelim makine restart olur
+
+docker info diyelim powershellde
+artık ostype windows 
+storage type windowsfilter
+default isolation hyperv geldi
+
+şimdi tekrar
+docker pull microsoft/nanoserver dedik
+yüklendi
+docker images
+nanoserver geldi şimdi
+docker run -it microsoft/nanoserver cmd dedik
+cmd geldi karşımıza
+task managerdan birkaç servisin başladığını görürüz
+içindeyiz dir dedik
+powershellde docker ps -a dedik exit komutunu gördük
+çalışmadığını gördük
+tekrar 
+docker run -it microsoft/nanoserver cmd  yaptık
+powershellde cmd ekranı açıldı
+başka powershellde docker ps -a dedik
+up olduğunu gördük statuste
+başka powershell açtık
+docker run -it microsoft/nanoserver cmd /c echo "ExecuteAutomation !!"  dedik
+docker ps -a dersek bu son makineyi de görebiliriz
+
+5)Understanding Hyper-V containers for Win:
+powershellde
+docker run -it microsoft/nanoserver cmd 
+docker ps -a dediğimizde 2 makinenin ayakta olduğunu görürüz
+docker network dedik komutları gördük
+docker network ls   networkü listeledik
+nat kullanıldığını görürüz
+docker inspect nat dedik
+IPv4e baktık 172.23.200.96/16 gördük  gallat ramanujan makinesi
+docker ps -a
+docker inspect --help
+docker inspect fbc dedik  bu gallant makinesinin containeridsi
+biz buradaki gateway IPAddress ile ilgileniyoruz şimdi
+gateway 172.23.192.1
+IPAddress de 172.23.200.96 dır
+
+docker inspect b90 
+172.23.192.1
+172.23.201.7 verdi
+her makinede IP adresi değişir
+
+Installing IIS on Hyper-V Containers:
+microsoft/iis hubda var
+docker pull microsoft/iis:nanoserver
+docker images deyince 2 tane image geldi
+iis:nanoserver ve nanoserver:latest
+docker run -d microsoft/iis dersek imageı local olarak bulamadım diyor
+bunun boyutu çok büyük olduğu için
+docker run -d microsoft/iis:nanoserver dedik ama buna port da verelim
+docker run -d -p 8000:8000 microsoft/iis:nanoserver  dedik
+docker ps -a
+docker inspect ea45  bununla iis makinesine bakalım
+Ipaddresi 172.23.206.159
+buna ping attık
+ping 172.23.206.159 dedik sonra web browsera yazdık
+IIS ekranı geldi
+
+7) Intro to WinServer 2016 Container Depth:
+Microsoft 2 tip base image sunuyor biri winservercore 9GB
+diğeri kullandığımız nanoserver 800MB
+
+8)Installing and working  with WinServer Container:
+Server 2016 development edition kurmuş onu açıyoruz
+makinenin içinde powershell açtık
+docker images dedik birçok image çıktı
+
+microsoft/mssql-server-windows-express varmış
+şimdi server 2016 içinde arama yaptık googleda
+docker for windows server 2016 diye
+windows containers on winserver olanı açtık
+https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/set-up-environment?tabs=Windows-Server
+install docker  bu linkteki işlemleri yaptık 
+sağ altta çubukta docker gemisi görünmüyor ama buna dikkat edelim
+dockerd.exe çalışıyor taskmanagerdan gördük
+https://github.com/OneGet/oneget
+
+docker run -it microsoft/nanoserver cmd /c echo "ExecuteAutomation" dedik çalıştırdık
+karşımıza powershell içinde cmd ekranı geldi
+burada docker ps -a dedik birçok makine geldi
+başka powershellde alttaki kodu çalıştıralım
+docker run -d microsoft/nanoserver cmd çalıştırdık
+docker run -it microsoft/nanoserver dedik diske baktık
+ikinci makine çalışmadan önce disk0 127 GB idi
+şimdi ikinci makineyi çalıştırınca Disk1 geldi ve 20GB yer aldık
+
+9)Working with File System ISolations:
+docker run --rm -it microsoft/nanoserver cmd dedik
+cmd ekranı açıldı
+içinde iken dir dedik
+Disk managementta disk1 üstüne gelip Change Drive Letter and PAth dedik
+D ekledik
+Serverdaki This PC'ye gelince hem c hem de D diski oluştuğunu görürüz
+D'yi açarsak normal win server diski açmış gibi oluruz 
+EA_30
+
+şimdi cmdden exit edince D diski kayboldu
+şimdi aynı run komutunu -v ile çalıştıralım  volume
+docker run --rm -it -v C:\app:c:\somename microsoft/nanoserver cmd
+bu haliyle çalıştırdık
+localdeki C apptan docker imageının c altına somename adıyla
+paylaşmış oluyoruz
+
+bu somename klasörünü containermappeddirectories olarak
+tanıtıyor
+bu klasöre d diskinden gidemeyiz ancak cmdden cd somename deyince
+görebiliriz
+
+10)Understanding namespace isolation indepth:
+
+11)Working with Process Isolations:
+şimdi eğitim 9daki D diski açık makineden devam ediyoruz
+task manager açalım details diyelim
+Select columns deyip Job ObjectID ekledik
+d diski containerdan exit ile çıktık
+host makinedeyiz localde yani
+Böylece task managerda az önce görünen birçok JobObjectId kayboldu
+
+docker run --rm -it -v C:\app:c:\somename microsoft/nanoserver cmd
+tekrar çalıştırırsak 
+powershellde powershell get-process diyelim
+
+12)Crash Course  - Making life easy with cycle.io:
+cycle startup firmasıdır containerlar üzerine çalışır
+
+https://cycle.io/
+
+Cycle.io ile powershell, command prompt vs kullanmadan UI
+üzerinden işlemleri yapabileceğiz
+Trial versiyonda 3GBtan fazla image oluşturamayız
+Images tan docker images dedik orada nginx deyince hubtan 
+sorgulayıp pull edilebilecek olanları gösterdi
+nginx:latest olanı seçip import ettik
+ürünü anlattı kolayca ayağa kaldırıp kullanma şansı sunuyor
+ farklı ülkelerde scale etme şansı sunuyor
+
+13)Network Isolations:
+Server 2016 içinde powershell açalım
+docker images dedik
+docker run -d --name iis1 microsoft/iis  dedik
+docker run -d --name iis2 microsoft/iis  dedik
+docker ps -a dedik 2 tane yeni makineyi gördük
+docker inspect iis1 dedik
+IPAdressi 172.27.178.140 vermiş
+docker inspect iis2 dedik
+IPAdressi 172.27.177.223 vermiş
+ping atınca gidiyor
+
+14)Working with SQLServer2016 with SQLServer Images from docker hub:
+
+eğitimdeki çalışmıyor bu olabilir
+https://hub.docker.com/_/microsoft-mssql-server
+
+docker pull mcr.microsoft.com/mssql/server
+
+sayfadan aldım
+
+How to use this Image
+Start a mssql-server instance using a CU tag, in this example 
+we use the CU 14 for SQL 2019 IMPORTANT NOTE: 
+If you are using PowerShell on Windows to run these commands use double quotes instead of single quotes.
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=yourStrong(!)Password" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-CU15-ubuntu-20.04
+Start a mssql-server instance using the latest update for SQL Server 2019
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=yourStrong(!)Password" -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+
+microsoft/mssql-server-windows-express var serverında
+docker run -d -p 1433:1433 -e sa_password=Password1 microsoft/mssql-server-windows-express
+dedik
+
+bu çalışmadı  alttakini verdik
+docker run -d -p 1433:1433 -e sa_password=Password1 microsoft/mssql-server-2016-express-windows
+şimdi oluştu
+
+docker ps -a dedik 
+serverda management studio kurmuş. 172.27.185.230 ip verdi
+sa ile giriyor  buna da docker inspect 622 containerid ile bulduk
+
+sql server adına girip baktığımızda containeridyi ad olarak 
+almış 622C7813E263/SQLEXPRESS demiş
+
+15)Scaling out with Docker on WinServer 2016 and Win10:
+
+16) Working with Docker file and deploying EARS reporting in container:
+
+https://docs.docker.com/engine/reference/builder/
+
+eski çalışanı durdurduk
+docker stop 622
+docker rm 622 dedik
+docker ps -a gittiğini görürüz
+docker stop c03
+docker rm c03
+docker stop c63
+docker rm c63
+docker stop bbb
+docker rm bbb
+docker stop bd1
+docker rm bd1
+
+chromedan git executeautomation dedik
+https://www.executeautomation.com/
+https://blog.executeautomation.com/
+github.com/executeautomation/SpecflowSeleniumParallel  
+https://github.com/executeautomation/ExecuteAutomationReportingSystem
+siteden indirdik içinde dockerfile var hazır
+
+powershell açtık
+docker images
+docker build -t ears . dedik
+docker images deyince ears geldi
+docker run -d ears dedik
+docker ps -a
+docker inspect 868
+172.27.181.10  chromeda açtık
+disk managementtan d diski ekledik
+d diski içinde ears klasörü geldi
+şimdi sayfa açılmadı port vererek çalıştıralım
+docker run -d -p 80:80 --name earsrun ears dedik
+docker ps -a
+docker inspect earsrun deyip ipyi aldık
+172.27.185.224 chromedan açtık
+modelsde index.aspx var içinde
+
+
+eğitim bitti 2,5 saat az karışık
+
+
+
+
+
+
+
+
+
+
