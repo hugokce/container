@@ -1,4 +1,5 @@
 https://www.udemy.com/course/jupyter-x-docker/learn/lecture/21187450?start=0#overview
+
 1saat eğitim
 
 import requests
@@ -15,8 +16,7 @@ https://github.com/codingforentrepreneurs/Jupyter-x-Docker-on-Heroku
 
 https://kirr.co/ivq0ff  bu da aynı github sayfasını verir
 
-VisualStudio Code da ortam hazırlayalım
-Önce folder oluşturalım cfe-jupyter adını verelim
+VisualStudio Code da ortam hazırlayalım. Önce folder oluşturalım cfe-jupyter adını verelim
 workspace cfe-jupyter.code-workspace diyelim
 pipenv install jupyter --python 3.8 
 kurulduktan sonra 
@@ -30,21 +30,24 @@ VSCodeiçinde yeni klasör oluşturalım conf adlı
 jupyter.py adlı dosya oluşturalım
 c=get_config()
 c.NotebookApp.password=""
+
 bunun üstüne # yazdığımız kodu terminalde çalıştırıyoruz
 önce ipython -c "from notebook.auth import password passwd()"
-bunu çalıştırınca enter password der gireriz
-sha1 ile hashlenmiş passwordu alırız alttaki kodu gireriz
+
+bunu çalıştırınca enter password der gireriz sha1 ile hashlenmiş passwordu alırız alttaki kodu gireriz
+
 c.NotebookApp.password=u'sha1:aa1sfdksfks:dakdakd'
 başına da u unicode için koyarız
+
 terminalde conf/jupyter.py çalıştırırız
+
 jupyter notebook --config=./conf/jupyter.py
-conf ile girince şifresordu abc girdik üstteki hash kodu ile aldı
-içeri bizi.
+conf ile girince şifresordu abc girdik üstteki hash kodu ile aldı içeri bizi.
+
 Şimdi VSCode'da yeni terminal açtık
 pipenv shell
 jupyter notebook --generate-config 
-Şimdi overwrite çıktı Y deyince config file çıktı karşımıza
-web sitesinden aldık
+Şimdi overwrite çıktı Y deyince config file çıktı karşımıza web sitesinden aldık
 
 import os
 c = get_config()
@@ -123,6 +126,7 @@ chmod +x scripts/entrypoint.sh
 
 terminalde
 docker build -t cfe-jupyter -f Dockerfile .  dedik
+
 VScodeda scripts içine d_build.sh dosyası açtık
 docker build -t cfe-jupyter -f Dockerfile . 
 sonra yeniden scripts içinde d_build.ps1 dosyası açtık
@@ -136,6 +140,7 @@ scripts altında d_run.sh oluşturduk içine şunu girdik
 docker run --env PORT=8888 -it -p 8888:8888 cfe-jupyter 
 chmod +x scripts/d_run.sh
 ./scripts/d_run.sh dedik
+
 şimdi artık localhost:8888 ten jupyter notebooka bağlanabiliriz
 içinde new one adında notebook oluşturduk
 script altında d_bnr.sh build and run demek bnr oluşturduk
@@ -145,7 +150,8 @@ docker run --env PORT=8888 -it -p 8888:8888 cfe-jupyter
 
 ekledik
 
-Bölüm4 Deployment with Heroku:
+Bölüm4 
+Deployment with Heroku:
 terminalde heroku dedik
 sonra heroku cli
 heroku create dedik
@@ -158,6 +164,7 @@ heroku container:push web -a protected-journey-80262 dedik
 push.sh içine şunu yazdık
 heroku container:push web -a protected-journey-80262
 heroku container:release web -a protected-journey-80262
+
 push.ps1 oluşturduk içine şunları yazdık
 heroku container:push web -a protected-journey-80262
 heroku container:release web -a protected-journey-80262
@@ -221,10 +228,7 @@ RUN pipenv install --skip-lock --system --dev
 
 CMD ["./scripts/entrypoint.sh"]
 
-kod bitti  burada
-----------------------------
-eğitim bitti 1 saat zordu
-
+-------------------------------------------------------------------------------------------
 
 
 
