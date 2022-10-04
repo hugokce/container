@@ -1,0 +1,234 @@
+https://www.udemy.com/course/jupyter-x-docker/learn/lecture/21187450?start=0#overview
+1saat eğitim
+
+import requests
+r=requests.get("http://httpbin.org/get")
+print(r.status_code)
+200 verir
+
+terminal açıp 
+import pandas as pd
+import tensorflow as tf
+https://github.com/codingforentrepreneurs
+
+https://github.com/codingforentrepreneurs/Jupyter-x-Docker-on-Heroku
+
+https://kirr.co/ivq0ff  bu da aynı github sayfasını verir
+
+VisualStudio Code da ortam hazırlayalım
+Önce folder oluşturalım cfe-jupyter adını verelim
+workspace cfe-jupyter.code-workspace diyelim
+pipenv install jupyter --python 3.8 
+kurulduktan sonra 
+pipenv shell 
+burada jupyter notebook deriz
+şimdi localhost:8888 
+cfe-jupyter.code-workspace  
+
+3)server configuration:
+VSCodeiçinde yeni klasör oluşturalım conf adlı
+jupyter.py adlı dosya oluşturalım
+c=get_config()
+c.NotebookApp.password=""
+bunun üstüne # yazdığımız kodu terminalde çalıştırıyoruz
+önce ipython -c "from notebook.auth import password passwd()"
+bunu çalıştırınca enter password der gireriz
+sha1 ile hashlenmiş passwordu alırız alttaki kodu gireriz
+c.NotebookApp.password=u'sha1:aa1sfdksfks:dakdakd'
+başına da u unicode için koyarız
+terminalde conf/jupyter.py çalıştırırız
+jupyter notebook --config=./conf/jupyter.py
+conf ile girince şifresordu abc girdik üstteki hash kodu ile aldı
+içeri bizi.
+Şimdi VSCode'da yeni terminal açtık
+pipenv shell
+jupyter notebook --generate-config 
+Şimdi overwrite çıktı Y deyince config file çıktı karşımıza
+web sitesinden aldık
+
+import os
+c = get_config()
+# Kernel config
+c.IPKernelApp.pylab = 'inline'  # if you want plotting support always in your notebook
+# Notebook config
+c.NotebookApp.notebook_dir = 'nbs'
+c.NotebookApp.allow_origin = u'cfe-jupyter.herokuapp.com' # put your public IP Address here
+c.NotebookApp.ip = '*'
+c.NotebookApp.allow_remote_access = True
+c.NotebookApp.open_browser = False
+# ipython -c "from notebook.auth import passwd; passwd()"
+c.NotebookApp.password = u'sha1:8da45965a489:86884d5b174e2f64e900edd129b5ef0d2f784a65'
+c.NotebookApp.port = int(os.environ.get("PORT", 8888))
+c.NotebookApp.allow_root = True
+c.NotebookApp.allow_password_change = True
+c.ConfigurableHTTPProxy.command = ['configurable-http-proxy', '--redirect-port', '80']
+
+kod buraya kadar webten aldığımız
+bu kodu jupyter.py içine yapıştırdık
+
+diğer kodlar silindi bu aldığımız kod kaldı sadece
+
+allow_root u projede False yaparız şimdi eğitim olduğu için
+True seçtik
+
+4) Ephemeral geçici dockercontainer
+notebookta pack it up adını verdik
+!tar chvfz notebook.tar.gz * yazıp çalıştırdık
+!tar -xv -f notebook.tar.gz   bunu da unpack it notebookta sakladık
+
+tekrar pack it up oluşturduk
+!tar chvfz notebook2.tar.gz * dedik
+unpacki yazalım tekrar
+!tar -xv -f notebook2.tar.gz
+Şimdi Local_Unload notebook oluşturduk içine şunu yazdık
+
+mode="unload"
+if mode=='unload':
+	!tar chvfz notebook.tar.gz *
+elif mode=='load':
+	!tar -xv -f notebook.tar.gz
+
+olarak saklarız
+
+Create minimal docker file
+VSCode içinde Dockerfile dosyası oluşturup içine şunu girdik
+
+FROM python:3.8.2-slim
+ENV APP_HOME /app
+WORKDIR ${APP_HOME}
+COPY . ./
+RUN pip install pip pipenv --upgrade
+# RUN pip install -r requirements.txt
+RUN pipenv install --skip-lock --system --dev
+CMD ["./scripts/entrypoint.sh"]
+
+--------------kod bitti burada
+
+6)CMD Entrypoint
+
+entrypoint.sh dosyası açtık
+içine yazdık
+
+#!/bin/bash
+
+/usr/local/bin/jupyter notebook --config=./conf/jupyter.py 
+girdik içine
+
+altta terminal açtık
+pipenv shell
+chmod +x scripts/entrypoint.sh
+./scripts/entrypoint.sh
+
+7)Build and run
+
+terminalde
+docker build -t cfe-jupyter -f Dockerfile .  dedik
+VScodeda scripts içine d_build.sh dosyası açtık
+docker build -t cfe-jupyter -f Dockerfile . 
+sonra yeniden scripts içinde d_build.ps1 dosyası açtık
+ps1 powershell demek
+içine aynı kodu koyduk
+docker build -t cfe-jupyter -f Dockerfile . 
+şimdi terminalde şunu çalıştıralım
+docker run -it cfe-jupyter /bin/bash dedik içine girdik
+
+scripts altında d_run.sh oluşturduk içine şunu girdik
+docker run --env PORT=8888 -it -p 8888:8888 cfe-jupyter 
+chmod +x scripts/d_run.sh
+./scripts/d_run.sh dedik
+şimdi artık localhost:8888 ten jupyter notebooka bağlanabiliriz
+içinde new one adında notebook oluşturduk
+script altında d_bnr.sh build and run demek bnr oluşturduk
+
+docker build -t cfe-jupyter -f Dockerfile .
+docker run --env PORT=8888 -it -p 8888:8888 cfe-jupyter
+
+ekledik
+
+Bölüm4 Deployment with Heroku:
+terminalde heroku dedik
+sonra heroku cli
+heroku create dedik
+şimdi jupyter.py içindeki NotebookApp.allow_origin içine
+şunu yapıştırdık protectec-journet-80262.herokuapp.com
+
+terminalde 
+heroku container:login dedik
+heroku container:push web -a protected-journey-80262 dedik
+push.sh içine şunu yazdık
+heroku container:push web -a protected-journey-80262
+heroku container:release web -a protected-journey-80262
+push.ps1 oluşturduk içine şunları yazdık
+heroku container:push web -a protected-journey-80262
+heroku container:release web -a protected-journey-80262
+
+terminalde chmod +x scripts/push.sh
+./scripts/push.sh
+
+çalıştıktan sonra
+heroku open -a protected-journey-80262
+
+Bonus Installs:
+FROM python:3.8.2-slim
+
+ENV APP_HOME /app
+WORKDIR ${APP_HOME}
+
+COPY . ./
+
+# Install Ubuntu dependencies
+# libopencv-dev = opencv dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        tzdata \
+        libopencv-dev \ 
+        build-essential \
+        libssl-dev \
+        libpq-dev \
+        libcurl4-gnutls-dev \
+        libexpat1-dev \
+        gettext \
+        unzip \
+        supervisor \
+        python3-setuptools \
+        python3-pip \
+        python3-dev \
+        python3-venv \
+        python3-urllib3 \
+        git \
+        && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Upgrade PIP
+RUN pip install pip pipenv --upgrade
+
+# sklearn opencv, numpy, and pandas
+RUN pip install scikit-learn opencv-contrib-python numpy pandas
+
+# tensorflow (including Keras)
+RUN pip install tensorflow keras
+
+# pytorch (cpu)
+RUN apt-get update && apt-get -y install gcc mono-mcs && rm -rf /var/lib/apt/lists/*
+RUN pip install torch==1.5.0+cpu torchvision==0.6.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+
+# fastai
+RUN pip install fastai
+
+# Project installs
+RUN pipenv install --skip-lock --system --dev
+
+
+CMD ["./scripts/entrypoint.sh"]
+
+kod bitti  burada
+----------------------------
+eğitim bitti 1 saat zordu
+
+
+
+
+
+
+
+
