@@ -279,8 +279,23 @@ mount -t proc proc /proc
 
 Kullanıcı isim alanları:
 
+Sistemde tanımlı 0 kullanıcı ID'si root yetkisine sahiptir. Bununla birlikte sadece belli alanda root yetkisine bir kullanıcı oluşturmak ve birden fazla 
+kullanıcıyı kendi isim alanlarında tutmak için kullanıcı isim alanı oluşturabiliriz.
 
+Öncelikle root dışında kullanıcı ile oturum açılır. Ardından alttaki komut çalıştırılır.
+unshare --mount --fork --pid --user bash dedik
+echo $UID çalıştırınca 65534 dedi
 
+--user parametresi ile clone sistem çağrısını CLONE_NEWUSER bayrağını aktifleştirerek yapmak için unshare komutunu kullandık. Bu sayede bir kullanıcı
+isim alanı oluştu. Bu isim alanında kullanıcı adımız nobody olarak gözüküyor. UID de 65534 idi. Arka planda yapılan bu id ile bu komutu çalıştıran 
+kullanıcının idsini haritalamaktır. Yani ubuntu kullanıcısı ile nobody kullanıcısını birbirine bağlamış oluyoruz. Bilgisayar da 65534 olan sayıları
+ubuntu kullanıcısının numarası olan sayıya çeviriyor. 
+
+Biz kendi kullanıcı isim alanımız içerisinde root kullanıcısı olarak işlem yapmak istiyoruz diyelim. Bunu da unshare komutuna --map-root-user parametresini
+vererek yapabiliriz. Ubuntu kullanıcısının oturumuna dönelim ve alttaki komutu çalıştıralım
+
+unshare --mount --fork --pid --user --map-root-user bash deriz. Şimdi echo $UID dersek 0 gelir. O halde shadow dosyasına bakalım okuyabiliyor muyuz diye.
+cat /etc/shadow  okuyamadık yetki yok diyor. Kullanıcımız aslında bir kullanıcı isim alanında haritalanmış mı bakalım. Önce proc dosya sistemine bağlanalım.
 
 
 
