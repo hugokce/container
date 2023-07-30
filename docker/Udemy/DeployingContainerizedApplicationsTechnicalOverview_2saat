@@ -1,0 +1,61 @@
+https://www.udemy.com/course/deploying-containerized-applications-technical-overview/learn/lecture/5677718?start=0#overview
+
+2,5 saat
+
+docker search mysql
+docker search hello-openshift
+docker pull openshift/hello-openshift 
+docker images
+docker rmi openshift/hello-openshift
+docker images
+mysql container image parametreleri:
+MYSQL_ROOT_PASSWORD
+MYSQL_DATABASE
+MYSQL_USER
+MYSQL_PASSWORD
+
+docker search mysql | grep docker.io/mysql
+docker pull mysql
+
+docker images | grep mysql
+hubtan bakalım mysql diye
+https://github.com/docker-library/mysql
+
+docker run -d --name mysql \
+-e MYSQL_ROOT_PASSWORD=changeme -e MYSQL_DATABASE=items \
+-e MYSQL_USER=user1 -e MYSQL_PASSWORD=mypa55 \
+mysql
+
+image oluştu
+
+docker ps
+docker exec -it mysql bash 
+
+içine girdik
+env | grep MYSQL
+parametreler geldi
+
+şimdi durdurmak için exit ile çıkalım
+exit
+
+docker stop mysql
+
+docker ps -a
+docker rm mysql
+docker ps -a
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
