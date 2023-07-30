@@ -206,6 +206,134 @@ docker rm mysql
 ./stop.sh deyip tümünün silinmesini sağlayalım
 
 7.Container orchestration with Kubernetes
+creating kubernetes resources
+kubectl create -f /path/to/json_or_yaml_file
+
+cd /kubernetes
+ls
+less mysql.yaml
+less pv.yaml
+less dbclaim.yaml
+less dbinit.yaml
+less mysql-service.yaml
+less wildfly.yaml
+less wildfly-service.yaml
+less run.sh
+şimdi çalıştıralım
+./run.sh
+kubectl logs -f wildfly
+
+Deployed todo.war görünce başarılı olduğunu görürüz
+http://192.168.1.101:30080/todo  açarız
+
+kubectl exec -it wildfly bash
+env | grep MYSQL
+exit
+
+less delete.sh bakalım
+./delete.sh çalıştıralım
+
+kubectl get pods ile pod gelmediğini görürüz
+
+docker ps -a dersek
+az önce exit ettiğimizi görürüz
+
+8.OpenShift Enterprise Features
+oc login -u student -p redhat   proje yok dedi
+oc new-project hexboard  yeni proje oluşturduk
+yeni bir app oluşturalım
+oc new-app -l servicegroup=sketchpod nodejs~https://github.com/zgutterm/do080 --context-dir=apps/sketchpod --name sketchpod deyip çalıştırdık
+
+oc build-logs sketchpod-build-1
+oc get pods
+sketchpod build , deploy, c8j82 ve build görebiliriz
+
+export ACCESS_TOKEN=$(oc whoami -t)
+echo $ACCESS_TOKEN dersek tokenı görürüz
+
+oc new-app -e "ACCESS_TOKEN=${ACCESS_TOKEN}" nodejs~https://github.com/zgutterm/do080 --context-dir=apps/sketchpod --name hexboard deyip çalıştırdık
+
+oc get pods deyip bakalım
+
+oc build-logs hexboard-build bakalım
+
+oc get pods diyelim
+
+oc status
+hex ve sketch bilgilerini gördük
+
+oc expose svc/hexboard --hostname=hexboard.cloudapps.example.com
+
+oc get routes
+
+oc get pods
+
+hexboard.cloudapps.example.com  adresine gidelim
+
+oc scale dc/sketchpod --replicas=4
+
+oc scale dc/sketchpod --replicas=8
+
+oc scale dc/sketchpod --replicas=1 
+
+9.OpenShift Enterprise Web Console:
+
+ose3-master.example.com:8443/login
+student 
+redhat
+
+10.Source to Image
+
+creating app using S2I
+oc new-app builder_is~https://git_repo_url --name=app_name
+
+oc new-app -e MYSQL_DATABASE=test nodejs~https://github.com/me/myapp --name=awesomeapp
+
+oc login -u system:admin
+
+oc project default
+
+less ~/do080/deploy/jee/ose/pv.json
+
+oc new-project todoapp
+
+oc create -f ~/do080/deploy/jee/ose/pv.json
+
+oc get pvc
+
+oc get build
+
+oc start-build todo
+
+oc get pods
+
+oc build-logs todo-1
+
+oc get pods
+
+oc logs todo-2-zwxvv 
+
+cd ose-install
+cd oo-install-ose-20151021-1917/openshift-ansible-3.0.2-2/
+
+vagrant ssh
+vagrant ssh master
+
+oc get pods
+oc port-forward -p todo-mysql-1-k27ow 33306:3306
+
+mysql -h 127.0.0.1 -P33306 -uuser1 -pmypa55 items ~/do080/apps/jee/src/main/resources/sql/create.sql
+
+
+mysql -h 127.0.0.1 -P33306 -uuser1 -pmypa55 items ~/do080/apps/jee/src/main/resources/sql/load.sql
+
+mysql -h 127.0.0.1 -P33306 -uuser1 -pmypa55 items 
+select * from Item;
+exit
+
+oc get route todo-http-route
+
+11.Introduction to OpenShift CLI
 
 
 
