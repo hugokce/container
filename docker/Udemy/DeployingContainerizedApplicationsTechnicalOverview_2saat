@@ -2,12 +2,18 @@ https://www.udemy.com/course/deploying-containerized-applications-technical-over
 
 2,5 saat
 
+3.Image Management
+image name syntax
+registry_uri/user_name/image_name:tag
+
 docker search mysql
 docker search hello-openshift
 docker pull openshift/hello-openshift 
 docker images
+to delete images
 docker rmi openshift/hello-openshift
 docker images
+
 mysql container image parametreleri:
 MYSQL_ROOT_PASSWORD
 MYSQL_DATABASE
@@ -21,12 +27,17 @@ docker images | grep mysql
 hubtan bakalım mysql diye
 https://github.com/docker-library/mysql
 
+-e env variable demektir
+
 docker run -d --name mysql \
 -e MYSQL_ROOT_PASSWORD=changeme -e MYSQL_DATABASE=items \
 -e MYSQL_USER=user1 -e MYSQL_PASSWORD=mypa55 \
 mysql
 
-image oluştu
+docker run -d --name mysql -e MYSQL_ROOT_PASSWORD=changeme -e MYSQL_DATABASE=items -e MYSQL_USER=user1 -e MYSQL_PASSWORD=mypa55 mysql
+
+container oluştu
+5bd4c9ebf444bb494fa784b9ba16dd69c63ac3e637d7db33be65a627eabdb4ef
 
 docker ps
 docker exec -it mysql bash 
@@ -43,6 +54,158 @@ docker stop mysql
 docker ps -a
 docker rm mysql
 docker ps -a
+
+4.Container Manipulation
+
+docker run openshift/hello-openshift
+serving on 8888
+serving on 8080  cevabı veriyor CTRL+C ile keselim 
+docker run -it openshift/hello-openshift /bin/bash
+CTRL+C ile keselim
+docker ps ile processlere bakalım
+docker stop e216 ile durdurduk
+
+docker run -d openshift/hello-openshift
+46d9c14a6c47eb9c272c18623de30d6d76b4202916910fb6e6c6eaae7f3be98f  oluştu
+
+docker ps deyince karşımıza gelir
+
+docker logs 46d
+serving 8080 ve 8888 döndü
+
+docker inspect 46d9 | grep IPAddress bu çalışmazsa
+docker inspect 46d9 | findstr IPAddress 
+
+  "SecondaryIPAddresses": null,
+            "IPAddress": "172.17.0.2",
+                    "IPAddress": "172.17.0.2", döner
+
+docker stop quirky_jemison ismiyle stopladık
+
+docker rm quirky_jemison
+
+docker run -d --name mysql -e MYSQL_DATABASE=items -e MYSQL_USER=user1 -e MYSQL_PASSWORD=mypa55 -e MYSQL_ROOT_PASSWORD=r00tpa55 -p 30306:3306 mysql
+
+docker ps 
+
+ip addr | grep eth1
+
+192.168.1.101/24 verdi egitimde
+192.168.1.109 Ipv4
+
+mysql -h 192.168.1.109 -P 30306 -uuser1 -pmypa55 items
+bağlandıktan sonra mysql items> çıkar
+show tables;
+source ~/do080/deploy/jee/linked/db.sql
+select * from Item;
+\q ile çıktık mysqlden
+
+docker exec -it mysql bash
+mysql -h @HOSTNAME -uuser1 -pmypa55 items
+select * from Item;
+\q ile çıktık
+exit ile de containerdan çıktık
+
+docker stop mysql 
+docker rm mysql ile sileriz
+
+5.Persistent Storage
+
+mkdir /var/dbfiles
+chmod o+rwx /var/dbfiles
+chcon -t svirt_sandbox_file_t /var/dbfiles
+
+sudo mkdir -p /var/local/mysql
+sudo chmod o+rwx /var/local/mysql
+sudo chcon -t svirt_sandbox_file_t /var/local/mysql
+docker run -d --name mysql -e MYSQL_DATABASE=items -e MYSQL_USER=user1 -e MYSQL_PASSWORD=mypa55 -e MYSQL_ROOT_PASSWORD=r00tpa55 -p 30306:3306 -v /var/local/mysql:/var/lib/mysql mysql
+içine ekleme yaptık
+
+docker ps
+ls /var/local/mysql dediğimizde
+
+docker logs -f mysql ile log içini görebiliriz
+
+6.Coordination of Multi-Container Applications
+
+docker run --link container_name:alias image_name
+docker run --link mysql:mysql -d -e MYSQL_DB_NAME=items --name wildfly -p 30080:8080 do080/todojee
+
+cd ~/do080/images/jee
+less Dockerfile  dockerfile içine bakalım
+FROM rhel7.2  önce imajı çektik
+sonra user ve grup ekleriz
+sonra workdir ile directory oluştururuz
+java_home belirlenir ENV ile.
+CMD ile boot esnasında çalışacak kodu belirleriz
+less build.sh bakalım
+#!/bin/bash
+docker build -t do080/wildfly .
+build.sh
+şimdi çalıştıralım
+./build.sh dedik
+
+komutlar sırasıyla çalışır
+
+bitince 
+docker images diyelim
+registry.access.redhat.com/rhel7.2 gelir
+
+şimdi wildfly çalıştıralım
+docker run -d --name wildfly do080/wildfly
+
+docker ps
+sonra loglara bakalım
+docker logs -f 37f6 
+-f follow
+
+curl http://localhost:8080/healthz/ping
+ok döndü
+docker stop wildfly dedik
+docker rm wildlfy
+
+cd ~/do080/deploy/jee
+ls attık
+less Dockerfile dedik
+
+FROM ve ADD komutları döndü
+less build.sh a bakalım
+
+rm -rf build
+mkdir -p build
+cp 
+mvn clean install var
+if fi komut aralığı var.
+
+./build.sh dedik
+
+docker images | grep todojee
+docker images
+
+cd ~/do080/deploy/jee/linked
+ls ./run.sh
+içinde database volume create var
+
+./run.sh çalıştıralım
+
+docker ps ile bakalım
+docker logs -f 449
+
+docker exec -it wildfly bash
+env variablelara bakalım
+env | grep MYSQL
+exit dedik
+
+less stop.sh diyelim
+içinde 
+docker stop wildfly
+docker rm wildfly
+docker stop mysql
+docker rm mysql
+
+./stop.sh deyip tümünün silinmesini sağlayalım
+
+7.Container orchestration with Kubernetes
 
 
 
