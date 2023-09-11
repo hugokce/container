@@ -6,6 +6,47 @@ scale up için gerekir bir de clustering için gerekir.
 COE automates --> deploying scaling ve managing containerized app
 docker swarm, k8s ve apache mesos vardır populer olarak
 
+multi-node cluster için kubeadm kullanılır.
+
+Pods:
+apiVersion v1
+kind Pod
+metadata name vs
+spec nginx-container
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
