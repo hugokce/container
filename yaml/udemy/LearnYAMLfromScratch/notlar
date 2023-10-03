@@ -1,7 +1,382 @@
 https://www.udemy.com/course/learn-yaml/learn/lecture/24008090?start=0#overview
 1 saat
 
-
-
 https://github.com/ttelang/learn-yaml/blob/main/src/objectives.yaml
+
+https://github.com/ttelang/learn-yaml/blob/main/src/case-sensitivity.yml
+
+Below is a basic example of a YAML file:
+
+---
+name: John Smith
+age: 25
+job: Software Developer
+skills:
+- Java
+- Python
+- JavaScript
+
+Some of the most popular libraries for working with YAML include YamlDotNet for .NET, PyYaml for Python, and SnakeYaml for Java.
+
+Benefits of YAML
+YAML has the following characteristics
+
+It is human readable.
+It has a simple and clean syntax.
+It is easy to implement and use
+It is portable across most of the programming languages.
+It matches native data structures of modern programming languages such as Python, Ruby and JavaScript.
+It has a consistent data model to support generic tools.
+It supports one-pass or one-direction processing.
+It is very expressive and extensible.
+
+Due to the above benefits numerous modern tools rely on YAML.
+
+YAML is used to store key-value pairs or mappings and list or sequence of elements.
+
+YAML is case-sensitive.
+
+Each item in the list below will be treated as a unique list item and key/value pair as the string contains different casing of alphabets.
+
+- DATA
+- data
+- Key: data
+- KEY: DATA
+
+https://github.com/ttelang/learn-yaml/blob/main/src/list.yml
+
+Bölüm 3
+https://github.com/ttelang/learn-yaml/blob/main/src/multi-document.yml
+
+---
+- Title: "Learn YAML from Scratch"
+- Message: "Welcome to this course"
+- Learning Objective:  
+  - "What is YAML?"
+  - "Basic Syntax"
+  - "Data Types"
+  - "Using Complex data types"
+  - "Advance features and capabilities"
+  - "Tools and Technologies leveraging YAML"
+  - "Creating and Validating YAML Data"
+---
+- Key: data
+- KEY: DATA
+- key: 
+  - Data 
+  - data
+  - DATA
+---
+- file extension: 
+  - '.yml'
+  - '.yaml'
+...
+
+
+Different documents are separated using three dashes (---). Use three dots (...) to mark the end of a document without starting a new one.   
+
+ - XML
+ - JSON
+ - CSV
+---
+ - Unicode
+ - ASCII
+ - UTF8
+...
+
+
+https://github.com/ttelang/learn-yaml/blob/main/src/block-style.yml
+Block style
+A document in block style uses spaces for structuring the document. It is very human readable but less compact. 
+
+Example
+
+color: 
+  - red
+  - yellow
+  - blue
+
+What is block style in YAML
+
+
+Overview
+
+
+Block style is a way of formatting YAML documents that are typically used to represent hierarchical data structures. In block style, each element of the document is completely contained within its own block element. This allows for more flexibility and control when working with large or complex data structures, as individual elements can be easily referenced, modified, or removed without affecting the rest of the document.
+
+
+https://github.com/ttelang/learn-yaml/blob/main/src/flow-style.yml
+
+Flow Style
+YAML has an alternate syntax called flow style, it allows sequences and mappings to be written inline without having to rely on indentation, using a pair of square brackets [ ] and curly brackets { } respectively.
+
+Flow style is an extension of JSON. It is less human readable however it provides more compactness.
+
+Examples
+
+color: [red, blue]
+and
+
+ - { name: 'James', age: 35 }
+
+What is flow style in YAML?
+Introduction
+
+
+Flow style is a syntax used to describe data structures in the YAML language. It was introduced as an alternative to the more common block style, which involves arranging YAML elements into separate blocks based on their level in the hierarchy of data. In contrast, flow style uses a single line for each element and places them directly next to each other. This can make for a more concise and readable YAML, especially when dealing with simple data structures.
+
+
+
+Basic syntax
+
+
+Flow style is very similar to JSON. The flow style syntax begins with a left curly brace ({), followed by the data structure elements separated by commas (,). Each element must be on its own line, without any indentation. The last element must also be followed by a right curly brace (}).
+
+
+
+Below is an example of a basic flow style YAML document:
+
+{ element1, element2, element3 }
+
+A basic flow style YAML document
+
+
+
+Flow style does not use indentation or whitespace to denote nesting, as block style does. This can make it difficult to read if it contains complex data structures. Below is an example of a complex flow style YAML document:
+
+{ "key": "value",
+"array": ["element1", "element2"],
+"nested_object": { "subkey1": "subvalue1", "subkey2": "subvalue2" }
+}
+A flow style YAML document
+
+
+
+Flow style lets us write data in one line. We use commas to separate the data. The left curly brace marks the start of the data structure, and the right curly brace marks the ends of it. We can also nest data inside other data structures.
+
+
+
+Benefits
+
+
+As flow style is more concise than block style and produces cleaner code, it is often preferred by developers who need to write complex or lengthy data structures. Additionally, using the flow style can reduce the chances of errors due to indention, since there is no need to keep track of indentation levels.
+
+
+
+Conclusion
+
+
+Overall, flow style is a useful syntax for describing data structures in YAML. Whether we're working with simple or complex data, it can help make our code more readable and easier to understand by using a single line per element. However, it can also be more difficult to work with than block style if our data contains many nested elements or complex structures. Regardless, it is an important format for developers who work with YAML regularly.
+
+
+#Block style comment burası
+
+# This is a single-line comment
+
+
+# This is a multi-line
+# comment in YAML. There is
+# no alternate way of creating
+# block comments.
+Multi-line comment in YAML
+
+https://github.com/ttelang/learn-yaml/blob/main/src/comments.yml
+
+# This is a multi-line 
+# comment in YAML. There is 
+# no alternate way of creating
+# block comments.
+
+# document starts below
+---
+key: "value" # mapping
+   # A list of two items
+list: 
+  - "item 1" # first value
+  - "item 2" # second value
+---
+# end of document
+
+[Article] Summary of YAML Features
+YAML is case-sensitive.
+To define a YAML file we use either .yml or .yaml extensions
+Different documents in YAML can be separated using three dashes (---).
+You use three dots (...) to mark the end of a document without starting a new one.
+A document in block style uses spaces for structuring the document.
+Flow style makes YAML an extension of JSON. It is less human-readable however it provides more compactness to the document.
+Any text after # not enclosed in ''(quotes) or "" (double quotes) is considered as comments.
+YAML does not support block or multi-line comments.
+
+
+https://github.com/ttelang/learn-yaml/blob/main/src/employee.xml
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<Departments>
+    <name>HR</name>
+    <head>Director</head>
+    <Employees>
+          <Employee>
+             <id>12</id>
+             <name>John</name>
+             <manager>123</manager>
+             <date_of_joining>2002-01-09</date_of_joining>
+    </Employees>
+</Departments>
+
+
+[Article] XML Overview
+XML stands for Extensible Markup Language. It is designed to store and transport data across many different IT systems. It is heavily used for communication across multiple distributed systems over the Internet.
+
+Example:
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<Departments>
+    <name>HR</name>
+    <head>Director</head>
+    <Employees>
+          <Employee>
+             <id>12</id>
+             <name>John</name>
+             <manager>123</manager>
+             <date_of_joining>2002-01-09</date_of_joining>
+    </Employees>
+</Departments>
+XML is not easily readable by humans. XML is parsed with the help of an XML parser for consuming it programmatically.
+
+However, XML uses a much self-describing syntax.
+
+Line 1 contains a prolog that defines the XML version and the character encoding as below:
+
+<?xml version="1.0" encoding="UTF-8"?>
+Line 2 is the root element of the document:
+
+<Organization>
+Line 3 starts a <Department> element with properties name and head:
+
+<Department name="HR" head="Director">
+The <Employee> elements have 4 child elements: <id>, <name>, <manager>, and <joining>.
+
+<id>12</id>
+<name>John</name>
+<manager>123</manager>
+<joining>2002-01-09</joining>
+The last line ends the element:
+
+</Department>
+
+
+https://github.com/ttelang/learn-yaml/blob/main/src/employee.json
+
+{
+  "Departments": [
+    {
+      "name": "HR",
+      "head": "Director",
+      "Employees": [
+        {
+          "id": 12,
+          "name": "John",
+          "manager": 123,
+          "date_of_joining": "2002-01-09"
+        }
+      ]
+    }
+  ]
+}
+
+
+[Article] JSON Overview
+JSON stands for JavaScript Object Notation. JSON is the most popular text-based data serialization format. Converting data to or from the JSON format is programmatically straightforward using JavaScript. Manually editing JSON files is harder than YAML. JSON provides a lowest common denominator information model, ensuring every modern programming language can easily process JSON data.
+
+However, it does have some drawbacks, like manually editing JSON files harder than YAML files.
+
+Example
+
+{
+  "Departments": [
+    {
+      "name": "HR",
+      "head": "Director",
+      "Employees": [
+        {
+          "id": 12,
+          "name": "John",
+          "manager": 123,
+          "date_of_joining": "2002-01-09"
+        }
+      ]
+    }
+  ]
+}
+JSON is a very simple format. Data within JSON is stored in name/value pairs separated by commas (,). Curly braces ({ }) are used to enclose objects and values enclosed within square brackets ([]) represent arrays.
+
+JSON does not require any special parsers as standard JavaScript functions can parse it.
+
+https://github.com/ttelang/learn-yaml/blob/main/src/employee.yml
+
+---
+Departments: 
+  - name: "HR"
+    head: "Director"
+    Employees: 
+      - id: 12,
+        name: "John"
+        manager: 123434
+        date_of_joining: 2002-01-09
+...
+
+
+[Article] YAML Overview
+YAML stands for YAML Ain't Markup Language. Its foremost design goal was to support human readability. It supports the serialization of arbitrary native data structures. It can be integrated into applications developed using modern programming languages. It is more complex to generate and parse than JSON or XML. It also provides a complete information model with more complex data types, which we will do later in this course. YAML is a superset of JSON. It is easy to migrate from JSON to YAML for supporting additional features.
+
+Example
+
+---
+Departments: 
+  - name: "HR"
+    head: "Director"
+    Employees: 
+      - id: 12,
+        name: "John"
+        manager: 123434
+        date_of_joining: 2002-01-09
+As you can see, YAML is a cleaner and more readable data format.
+
+You can try to play around with all these data formats in any text editor.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
