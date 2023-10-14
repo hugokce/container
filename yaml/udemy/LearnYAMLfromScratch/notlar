@@ -344,39 +344,785 @@ As you can see, YAML is a cleaner and more readable data format.
 
 You can try to play around with all these data formats in any text editor.
 
+Part 5 Data Types in YAML
+18 PPT Data types.pdf
+
+string: "Hello"
+integer: 123
+float: 12.345
+boolean: No
+
+| newlines preserved
+
+text: |
+every line in this text
+will be stored
+as seperate lines.
+
+text: >
+this text will
+be wrapped into
+a single paragraph.
+
+##Tags explicitly specifying data types.
+
+age: !!float 23
+married: !!str true
+
+age will be stored float, not int
+married will stored str, not boolean.
+
+#Integers
+
+negative: !!int -12
+zero: !!int 0
+positive: !!int 23
+binary: ob101010
+octal: 01672
+hexadecimal: 0x1C7A
+number: +687_456
+sexagesimal: 180:30:20 #base 60
+
+#Floating point real numbers
+
+negative: !!float -1.23
+zero: !!float 0.0
+positive: !!float 2.3e4
+initiity: !!float .inf
+not a number: !!float .nan
+
+#Boolean a true false value
+
+married: !!bool true
+odd: !!bool false
+
+#String
+
+name: !!str "James"
+message: !!str "This is a \n multiline text"
+
+#Null
+
+manager: !!null null
+blank:
+tilde: ~
+title: null
+¨: null key
+
+#Timestamp time ISO8601 format.
+#if we did not give a time zone it is assumed 00:00:00Z
+
+time: 2020-12-07T01:02:59:34.02Z
+timestamp: 2020-12-07T01:02:59:34.02 +05:30
+datetime: 2020-12-07T01:02:59:34.02+05:30
+notimezone: 2020-12-07T01:02:59:34.02
+date: 2020-12-07
 
 
+How to represent key-value pairs in YAML
+Overview
+
+YAML is a human-friendly data serialization standard for all programming languages. In YAML, key-value pairs are one of the core constructs and can be used to represent any type of data, including lists and hashes.
+
+What is a key-value pair?
+
+A key-value pair is a simple data structure that consists of a unique identifier (the key) and the corresponding value of that identifier.
+
+The key can be any data type, such as a text string or an integer. The value can also be of any type of data, including string, integer, float, boolean, list, or even other key-value pairs.
+
+A key-value pair
+
+Uses of a key-value pair
+Here are some of the most common uses of key-value pairs:
+
+They are used in the implementation of hash tables, whereby they are used to store and retrieve information.
+
+Many programming languages include built-in support for key-value pairs as a core data structure, making them a fundamental part of many software applications.
+
+Key-value pairs provide a powerful and flexible way to store and work with data.
+
+Syntax
+In YAML, key-value pairs are represented using a colon (:), followed by the content of the value. The basic format of a key-value pair is as follows:
+
+key: value
+
+Where key represents the key, and value represents the corresponding value.
+
+Example
+For example, let's say we have the data as shown below:
+
+Employee Data
+
+Name                  Age           Occupation
+
+John Doe            43              Software Engineer
+
+We can represent this in YAML using key-value pairs as follows:
+
+name: John Doe
+age: 43
+occupation: Software Engineer
+YAML representation of employee data
+
+As we can see, the format is very simple. Each key is followed by a colon and then the value. We can also use quotation marks (' or ") around the key-value pair if we want to include special characters or whitespace.
+
+Conclusion
+
+In this article, we learned how to represent key-value pairs in YAML. We also saw a simple example of using this data serialization standard.
+
+Many other features in YAML can be used to represent key-value pairs and other data structures. Whether working with a simple key-value pair or something more complex, YAML offers flexibility and power for representing structured data.
 
 
+----------------------------
+
+https://github.com/ttelang/learn-yaml/blob/main/src/variables.yml
+
+primitive data types
+boolean, numbers, text, dates, timestamp, arrays, key-value pair, nulls
+
+Part 6 Advanced Data Types in YAML
+
+Tags for Basic data types
+prefixed with !!
+int, float, str, bool, null, seq-sequence, map, omap -ordered map
+set, pairs
+
+Sequence
+sequence is collection or List indexed by integer starting
+with zero
+sparse sequence --> can contain empty values
+nested sequence --> containes sequence as its data item.
+
+Mapping:
+name-value pairs: mapping are used to store name value pairs. these could be 
+an unordered list of name value or key-value pairs.
+
+nested mappings: mappings where a value is a map in itself. 
+hierarchy of map.
+
+dictionary: is a sequence of ordered key-value pairs.
+it is also called ordered maps.
+
+------------------
+https://github.com/ttelang/learn-yaml/blob/main/src/set.yml
+
+# Explicitly typed set.
+players: !!set
+  ? Mark
+  ? Steve
+  ? Smith
+
+# Flow style
+soccer teams: !!set { Chelsea, Arsenal, Liverpool }
+
+sequence is a list members are denoted by hyphen -
+- red
+- orange
+- yellow
+
+--- 
+colors: !!seq #ordered sequence of nodes
+   - red
+   - orange
+   - yellow
+if we change their order it will be unique.
+---
+
+sequence in flow style
+[red, orange, yellow]
+
+---
+#sparse seq --> not all the elements have values
+null or empty value can be contain
+---
+- ~
+- blue
+- 
+- Null
+- NULL
+- orange
+
+#Nested sequence
+represents a seq of items and sub-items
+
+It is specified by placing a single space each dash in the 
+sub-items. YAML uses spaces, NOT tabs for indentation
+
+---
+-  --> first seq
+ - red
+ - green
+ - blue
+-  --> second seq
+ - orange
+ - yellow
+ - brown
+https://github.com/ttelang/learn-yaml/blob/main/src/nested-sequence.yml
+--------------------
+
+#Mappings ('!!map')
+mappings are used for storing a name-value pair
+they are mostly used for setting up data in configuration parameters
+#<name>: <value>
+
+color: red
 
 
+#Nested Mappings: a value in a mapping can be another mapping.
+https://github.com/ttelang/learn-yaml/blob/main/src/nested-mappings.yml
+---
+#unordered set of name: value pairs
+a: 1
+b:  --> another map value
+   c: 3
+   d: 4
+---
+
+#there is also a compact notation using '{}' for maps.
+---
+a: 1
+b: {c: 3, d: 4}
+
+#Pairs ('!!pairs') - ordered list of named values
+#it allows duplicates
+#many prog lang do not have pairs as a native data type.
+#hence an application may interpret '!!pairs' as array of hash tables
+#containing one key each.
+
+#explicitly typed pairs.
+
+#Block style
+tasks: !!pairs
+   - meeting: standup
+   - meeting: demo
+   - break: lunch
+   - meeting: all hands
+
+#Flow style
+tasks: !!pairs [meeting: standup, meeting: lunch]
+
+##Set ('!!set') unordered collection of nodes with distinct values.
+items should be distinct
+
+#explicitly typed set
+players: !!set
+   ? Mark
+   ? Steve
+   ? Smith
+
+#Flow style
+soccer teams: !!set {Chelsea, Arsenal, Liverpool }
+
+##Dictionary ('!!omap') data type where value in a mapping can be a sequence.
+
+#Nestep mapping: a mapping can contain any assortment of mappings
+and sequences as values.
+
+Fruits: !!omap #explicitly typed ordered map
+   - Apple:
+      calories: 120
+      fat: 0.2 g
+      carbs: 35 g
+   - Banana: 
+      calories: 105
+      fat: 0.4 g
+      carbs: 27 g
+
+[Article] Advanced Data Types in YAML
+Sequence (!!seq)
+Represents a collection indexed by sequential integers starting with zero. It is specified by placing each member on a new line with a hyphen or dash character -.
+
+Example
+
+- red
+- orange
+- yellow
+or
+
+Example
+
+# Ordered sequence of nodes
+colors: !!seq
+  - red
+  - orange
+  - yellow
+There is also a compact notation using [] for sequence. The above sequence can also be represented as below:
+
+Example
+
+[red, orange, yellow]
+Sparse sequence
+A sequence where not all the keys have values is known as a sparse sequence.
+
+Example
+
+sparse: 
+  - ~
+  - blue
+  - 
+  - Null
+  - NULL
+  - orange
+Nested Sequence
+Represents a sequence of items and sub-items. It is specified by placing a single space for each dash in the sub-items. YAML uses spaces, NOT tabs for indentation.
+
+Example
+
+-
+ - red
+ - yellow
+ - blue
+- 
+ - orange
+ - green
+ - brown
+Mappings (!!map)
+Mappings are used for storing a name-value pair. They are mostly used for setting up data in configuration parameters.
+
+Syntax
+
+<name>: <value>
+Example
+
+color: red
+Nested Mappings
+A value in a mapping can be another mapping. There is also a compact notation using {} for maps.
+
+Example
+
+# Block style representation of unordered set of name: value pairs.
+a: 1
+b: 
+  c: 3
+  d: 4
+is equivalent to
+
+a: 1
+b: {c: 3, d: 4}
+Pairs (!!pairs)
+Pairs are an ordered list of named values, allowing duplicates.  Many programming languages do not have pairs as a native data type, hence an application may interpret !!pairs as an array of hash tables containing one key each.
+
+Example
+
+# Explicitly typed pairs.
+Block tasks: !!pairs
+  - meeting: standup
+  - meeting: demo
+  - break: lunch
+  - meeting: all hands
+Flow tasks: !!pairs [ meeting: standup, meeting: lunch ]
+Set (!!set)
+A set is an unordered collection of nodes with distinct values.
+
+Example
+
+# Explicitly typed set.
+players: !!set
+  ? Mark
+  ? Steve
+  ? Smith
+ 
+# Flow style
+soccer teams: !!set { Chelsea, Arsenal, Liverpool }
+Dictionary (!!omap)
+A value in a mapping can be a sequence. A mapping can contain any assortment of mappings and sequences as values.
+
+List members are denoted by a leading hyphen (-). it should be separated from the node with white space.
+
+Example
+
+Fruits: !!omap # Explicitly typed ordered map
+  - Apple:  
+      calories: 120
+      fat: 0.2 g
+      carbs: 35 g
+  - Banana: 
+      calories: 105
+      fat: 0.4 g
+      carbs: 27 g
+
+----------------------
+
+[Article] Advanced Data Types in YAML
+Sequence (!!seq)
+Represents a collection indexed by sequential integers starting with zero. It is specified by placing each member on a new line with a hyphen or dash character -.
+
+Example
+
+- red
+- orange
+- yellow
+or
+
+Example
+
+# Ordered sequence of nodes
+colors: !!seq
+  - red
+  - orange
+  - yellow
+There is also a compact notation using [] for sequence. The above sequence can also be represented as below:
+
+Example
+
+[red, orange, yellow]
+Sparse sequence
+A sequence where not all the keys have values is known as a sparse sequence.
+
+Example
+
+sparse: 
+  - ~
+  - blue
+  - 
+  - Null
+  - NULL
+  - orange
+Nested Sequence
+Represents a sequence of items and sub-items. It is specified by placing a single space for each dash in the sub-items. YAML uses spaces, NOT tabs for indentation.
+
+Example
+
+-
+ - red
+ - yellow
+ - blue
+- 
+ - orange
+ - green
+ - brown
+Mappings (!!map)
+Mappings are used for storing a name-value pair. They are mostly used for setting up data in configuration parameters.
+
+Syntax
+
+<name>: <value>
+Example
+
+color: red
+Nested Mappings
+A value in a mapping can be another mapping. There is also a compact notation using {} for maps.
+
+Example
+
+# Block style representation of unordered set of name: value pairs.
+a: 1
+b: 
+  c: 3
+  d: 4
+is equivalent to
+
+a: 1
+b: {c: 3, d: 4}
+Pairs (!!pairs)
+Pairs are an ordered list of named values, allowing duplicates.  Many programming languages do not have pairs as a native data type, hence an application may interpret !!pairs as an array of hash tables containing one key each.
+
+Example
+
+# Explicitly typed pairs.
+Block tasks: !!pairs
+  - meeting: standup
+  - meeting: demo
+  - break: lunch
+  - meeting: all hands
+Flow tasks: !!pairs [ meeting: standup, meeting: lunch ]
+Set (!!set)
+A set is an unordered collection of nodes with distinct values.
+
+Example
+
+# Explicitly typed set.
+players: !!set
+  ? Mark
+  ? Steve
+  ? Smith
+ 
+# Flow style
+soccer teams: !!set { Chelsea, Arsenal, Liverpool }
+Dictionary (!!omap)
+A value in a mapping can be a sequence. A mapping can contain any assortment of mappings and sequences as values.
+
+List members are denoted by a leading hyphen (-). it should be separated from the node with white space.
+
+Example
+
+Fruits: !!omap # Explicitly typed ordered map
+  - Apple:  
+      calories: 120
+      fat: 0.2 g
+      carbs: 35 g
+  - Banana: 
+      calories: 105
+      fat: 0.4 g
+      carbs: 27 g
+
+---------------------------
+
+Anchors and Merging Mappings - Special Features in YAML
+#Anchors
+#Anchors are used to reuse properties.
+#To denote references '&' character is used and alias is represented
+using * character.
+
+Strawberry:
+   color: [255, 0, 0]
+Apple: 
+   color: [255, 0, 0]
+
+Strawberry:
+   color: &red [255, 0, 0]
+Apple: 
+   color: *red
+
+we define anchor with & character.
+*red means [255, 0, 0] 
+it is a great way of reusing values which we have to repeat multiple
+times in the document.
+
+#Merging mapping
+the '<<' symbol is used to indicate that all the keys of one or more
+specified maps should be inserted into the current map.
+
+parent: &base
+   name: 'James'
+   age: 35
+
+employee: 
+   <<: *base     --> it uses parent's objects.
+   married: true
+
+if we add age: 50 we overwrite on it.
+
+## user can specify default value mapping.
+default
+=: 1
+
+we defined default value.
+
+---------------------
+
+[Text] Special Features
+Anchors
+For reusing properties we use anchors.
+
+Syntax
+
+anchored_value: &anchorName value
+other_property: *anchorName #value
+The symbol <<  is used to indicate that all the keys of one or more specified maps should be inserted into the current map.
+
+Example
+
+parent: &base 
+  name: 'James'
+  age: 35 
+ 
+employee:
+  <<: *base 
+  married: true
+Here employee would also have properties as below:
+
+Example
+
+  name: 'James'
+  age: 35
+We can also override some values (for e.g. name) as below:
+
+Example
+
+  <<: *base
+  name: 'Smith'
+This would be equivalent to
+
+Example
+
+  name: 'Smith'
+  age: 35
+Default Value Mapping
+YAML allows users to specify default value mapping.
+
+Example
+
+# default 
+=: 1
+
+21 Advanced data types pdf
+-----------------------
+
+Part 7
+
+[Article] Popular Tools supporting YAML Data Format
+Popular Tools using YAML
+Below are some of the tools which are extensively leveraging YAML data format.
+
+1. CircleCI - CircleCI is a modern Continuous Integration and Deployment (CI/CD) tool for the cloud which can be used for automating builds, tests, and deployment of software.
+
+CircleCI uses a YAML file called config.yml to store its configuration. If you are planning to learn or use CircleCI in your project, the concepts covered in this course are very important as you would be working on a YAML file to configure CircleCI.
+
+2. Travis CI - Travis CI is a hosted continuous integration service used to build and test software projects hosted at GitHub and Bitbucket.
+
+Travis CI uses a YAML file named .travis.yml to store its configuration in your repository. The concepts covered in this course are very important as your project will only build with Travis CI if it contains a valid configuration.
+
+3. Azure DevOps - A service to continuously build, test, and deploy to any platform and cloud. You define pipelines, which are stages of your CI/CD process using YAML.
+
+Azure DevOps also provides other options like a visual designer for defining build and release pipelines. However, using YAML provides you additional flexibility as you can manage these pipelines like any other source file and version control it.
+
+4. Jenkins X -  Jenkins X is an open-source tool for CI/CD automation for cloud-native applications on Kubernetes.
+
+YAML plays an important role in Jenkins X. The Jenkins X cluster configuration process creates a YAML based pipeline configuration file called jenkins-x.yml.
+
+5. Spring Boot - Spring Boot is an open-source Java-based framework used to create microservices.
+
+Understanding YAML is very important if you are developing using Spring Boot. It uses a YAML file called application.yml to store its configuration properties.
+
+6. Docker - Docker is a set of platform as a service (PaaS) products that use OS-level virtualization to deliver software in packages called containers.
+
+Multi-container applications in Docker are defined using a tool called Compose, which uses a YAML file named docker-compose.yml to configure the application’s services.
+
+7. Chef Automate - Chef Automate is an enterprise platform that allows developers, operations, and security engineers to collaborate effortlessly on delivering application & infrastructure changes at the speed of business.
+
+It uses a YAML resource block to declare the configuration data to be tested.
+
+8. Ansible - Ansible is an open-source software provisioning, configuration management, and application-deployment tool enabling infrastructure as code.
+
+Ansible uses YAML for expressing Ansible playbooks because it is very easy for humans to understand, read and write when compared to other data formats like XML and JSON.
+
+9. Kubernetes - Kubernetes (commonly stylized as k8s) is an open-source container orchestration system for automating computer application deployment, scaling, and management.
+
+Kubernetes resources, such as pods, services, and deployments are created through a declarative way using the YAML files.
+
+10. Swagger - A simple yet powerful tool for RESTful API documentation and design. It is part of the open tools initiative and is backed by Microsoft, Google, PayPal and IBM.
+
+Using YAML, you can create a Swagger instance of your API. Swagger consumes specifications in YAML format as input and generates HTML documentation of the API.
+
+and many more...
+
+The details of each of these tools is beyond the scope of this course.
+
+You will definitely find the key concepts covered in this course helpful going forward incase you are planning to learn or use any of the tools and technologies mentioned above.
+
+---------------------------------------
+
+[Article] Libraries for parsing and emitting YAML data
+
+You need a YAML Parser library to validate the structural correctness and extract information from text input.
+
+The emitter is a code generator that can convert a native data type of language into a YAML format.
+
+Libraries for parsing and emitting YAML data
+Below is the list of parsers and emitters libraries for YAML in various programming languages. Please visit the associated link if you want to learn more about any of the libraries.
+
+C - LibYAML - A C library for parsing and emitting YAML.
+https://github.com/yaml/libyaml
+
+Python - PyYAML - YAML parser and emitter for Python
+https://pypi.org/project/PyYAML/
+
+Ruby - ruby/yaml - provides a Ruby interface for data serialization in YAML format.
+https://github.com/ruby/yaml
+
+Go - go-yaml - enables Go programs to encode and decode YAML values comfortably.
+https://github.com/go-yaml/yaml
+
+PHP - symfony/yaml - parses YAML strings to convert them to PHP arrays.
+https://github.com/symfony/yaml
+
+.NET - YamlDotNet - .NET library for YAML
+https://github.com/aaubry/YamlDotNet
+
+JavaScript - js-yaml - YAML parser for JavaScript
+https://github.com/nodeca/js-yaml
+
+Java - SnakeYAML Engine is a YAML 1.2 processor for the Java Virtual Machine version 8 and higher. 1.1 parser and emitter for Java
+https://bitbucket.org/asomov/snakeyaml-engine
+
+Perl - [YAML::PP] a Perl-based modular YAML processor.
+https://github.com/perlpunk/YAML-PP-p5
+
+You would find the above list useful if you're looking to evaluate various programming languages for their YAML support in building an application where consuming and exchanging data in YAML format.
+
+---------------------------------------
+
+[Article] Useful Tools for Creating and Validating YAML data
+Below are some very useful tools you may find handy while creating or editing a YAML data file.
+
+YAML Lint - Validate and Verify your YAML documents by pasting your YAML on this page.
+http://www.yamllint.com/
+
+YAML Validator - Similar to the YAML lint tool, you can Copy, Paste and Validate your YAML online with this URL.
+https://codebeautify.org/yaml-validator
+
+YAML Beautifier - an online tool to convert unformatted or ugly YAML data into a well-formatted one for saving and sharing with others.
+https://codebeautify.org/yaml-beautifier
+
+YAML Converter - convert your YAML data into JSON, XML or CSV format online.
+https://codebeautify.org/yaml-to-json-xml-csv
+
+Online YAML Parser - just write some YAML and it outputs the corresponding JSON format in real-time.
+http://yaml-online-parser.appspot.com/
+
+YAML to PDF Table Converter - Online tool to convert YAML to PDF table.
+https://www.beautifyconverter.com/yaml-to-pdf-converter.php
+
+----------------------------------------------
+
+Exercise on Creating and Validating YAML data
+Exercise
+Create a file called email.yaml with content as below:
+
+To: John
+
+From: Mary
+
+Title: Happy New Year
+
+Message: Wishing you a very Happy New Year 2021
+
+Create a shopping list with 5 items using YAML and validate it using YAMLLint.
+
+Create a list of your top 10 favorite movies or books details with the year of release, lead actors, director, and producer in YAML format. Convert this list to XML and JSON using YAML Tools.
+
+Tip: For doing the above exercise, feel free to use any code editor or text editor of your choice. Below are some of the popular code editors for your reference.
+
+Notepad or Notepad++
+
+Visual Studio Code
+
+Sublime Text
+
+Eclipse IDE
+
+IntelliJ IDEA
+
+Atom
 
 
+-------------------------------------
 
+Coding Exercise on YAML
+Problem
+See the example YAML data below. It demonstrates the usage of a list of dictionaries and a dictionary within a dictionary.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+---
+employee: 
+  id: 1
+  name: smith
+  salary: 10000
+  address: 
+    city: toronto
+    state: ontario
+    country: canada 
+    zip: A2NY1J
+  commission: 
+    - 
+      quarter: Q1 2020
+      amount: 1000
+    - 
+      quarter: Q2 2020
+      amount: 1000
+# Add another employee data below
+...
+Now add another employee to the above document with data from the table below:
 
 
 
