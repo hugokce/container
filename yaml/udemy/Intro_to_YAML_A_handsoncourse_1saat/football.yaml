@@ -1,0 +1,95 @@
+get: players
+parameters:
+   - id: 276
+     season: 2019
+errors: []
+results: 1
+paging:
+   current: 1
+   total: 1
+
+response:
+   - player:
+      id : 276
+      name: Neymar
+      firstname: Neymar
+      lastname: da Silva Santos Junior
+      age: 29
+      birth:
+       date: !!timestamp 1992-02-05
+       place: Mogi das Cruzes
+       country: Brazil
+
+      nationality: Brazil
+      height: 175 cm
+      weight: 68 kg
+      injured: False
+      photo: "https://media.api-sports.io/football/players/276.png" 
+
+     statistics:
+      - team:
+         id: 85
+         name: Paris Saint German
+         logo: "https://media.api-sports.ip/football/teams/85.png"
+
+        league:
+         id: 61
+         name: Ligue 1
+         country: France
+         logo: "https://media.api-sports.io/football"
+         flag: "https://media.api-sports.ip/flags/fr"
+         season: 2019
+
+        games:
+         appearances: 15
+         lineups: 15
+         minutes: 1322
+         number: 
+         position: Attacker
+         rating: 8.053333
+         captain: False
+
+        substitutes:
+         in: 0
+         out: 3
+         bench: 0
+
+        shots:
+         total: 70
+         on: 36
+        goals:
+         total: 13
+         conceded:
+         assists: 6
+         saves: 0 
+        passes:
+         total: 704
+         key: 39
+         accuracy: 79
+        tackles:
+         total: 13
+         blocks: 0
+         interceptions: 4
+
+        duels:
+         total:
+         won:
+        dribbles:
+         attempts: 143
+         success: 88
+         past:
+
+        fouls:
+         drawn: 62
+         commited: 14
+
+        cards:
+         yellow: 3
+         yellowred: 1
+         red: 0
+        penalty:
+         won: 1
+         commited: 
+         scored: 4
+         missed: 1
+         saved: 
