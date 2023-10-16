@@ -1,4 +1,4 @@
-https://www.udemy.com/course/introduction-to-yaml-a-hands-on-course-2022/learn/lecture/33587420#overview
+https://www.udemy.com/course/introduction-to-yaml-a-hands-on-course-2022/learn/lecture/33587420?start=0#overview
 
 1 saat
 
@@ -7,3 +7,592 @@ Read the course documentation online - (https://mohitkr05.github.io/YAML_Course/
 Clone this repository       - git clone https://github.com/mohitkr05/YAML_Course.git` 
 
 Go to the source code  directory to access files
+
+https://mohitkr05.github.io/YAML_Course/chapters/cheat_sheet/
+
+Preparation
+Download the source code from the following git repository - YAML
+Download the extension YAML - REDHAT. Alternatively you can use the following command in the command pallete in VS-code
+
+ext install redhat.vscode-yaml 3. Download the source code from here 
+4. Watch the videos and practice.
+
+
+https://en.wikipedia.org/wiki/Comparison_of_data-serialization_formats
+
+# comments
+
+3 dashes multiple documents
+
+--- 
+document: document1
+
+
+---
+document: document2
+
+
+--car.yaml and read_yaml.py files are written.
+read_yaml
+
+import yaml
+
+yaml_file = 'car.yaml'
+
+with open(yaml_file, encoding="utf-8") as file:
+    data = yaml.load(file, loader=yaml.FullLoader)
+
+    for keys, values in data.items():
+        #key:keyname, value
+        print("key: ", keys, "\t value:", values, "\t type:", )
+----------------
+car.yaml inside
+---
+#document 1
+# This is a yaml document that will define a car
+
+#This document has multiple lines of comment
+# - line 1
+# - line 2
+# - line 3
+
+document_name: "car.yaml" #this is the document name
+
+---
+# document 2
+
+
+
+
+----------------
+vehicle type is car
+it has 4 wheels
+car type is sedan
+
+vehicle type and car type are the keys
+car and sedan are values.
+
+key 		value    Type
+vehicle_type    car      string
+wheels          4        integer
+car_type        sedan    string
+
+mappings : key value pairs
+
+we enter below code to terminal at VSCode
+watch read_yaml.py
+
+Scalar:
+vehicle_type: car  --> unquoted scalars 
+car_type: "sedan"  --> double quoted scalars
+make: 'paper co'   --> single quoted scalars
+
+vendor_name: Mercedes Benz
+dealer_name: XYZ Car sales company pvt. ltd.
+address: "Some street, some city, \n some state, \n XYZ Country -3000"
+address: 'Some street, some city, \n some state, \n XYZ Country -3000'
+"" shows special characters but '' not shows
+
+
+More Scalars:
+car_description: >
+   This line will not be printed with any endline. It will be printed as a continous sentence
+
+dealer_address: |
+    Somewhere somestreet,
+    city abc,
+    state xyz,
+    country pqr - 3000
+
+below is the sample code
+#use case - output should be a single line without any return
+address: 
+   "Some street, some city, 
+   some state, 
+   XYZ Country 
+   3000"
+
+# preformatted data
+address2: |
+   'Some street
+   some city, 
+   some state, 
+   XYZ Country
+   3000'
+
+sample_html: |
+   <html>
+      <head>
+         <title> this is the title</title>
+      </head>
+   </html>
+
+------------------------------
+Other scalars
+wheels: 4
+length: 4.6
+is_new: True
+
+#integers
+wheels: 4
+doors: 5
+height: 1.2
+weight: 2.5
+
+infinity: -.inf  #infinity
+nothing: .nan    #divided by 0
+
+------------------------------
+
+Booleans:True/Yes &False/No
+
+this_is_true: True
+this_is_also_true: Yes
+this_is_false: False
+this_is_also_false: No
+
+this_is_true: true
+this_is_also_true: yes
+this_is_false: false
+this_is_also_false: no
+
+recommendation --> no or yes should not be used.
+
+
+#Sequence:
+use a - dash or hyphen
+
+teams:
+ - India
+ - Mumbai
+ - Yorkshire
+ - Mumbai Indians
+ - Asia XI
+
+skills: [batting, bowling, fielding]
+
+nested seq
+skills: 
+   - batting:
+      - batting_style:
+         - right and batsman
+         - opening batsman
+   - bowling:
+      - right arm off spin
+      - googly bowler
+   - fielding:
+      - slips
+      - long off
+
+---------------------------------------
+#Keys with Quotes
+use quotes for keys with multiple lines or special characters
+
+Batting & fielding:
+"Indian Cricket \t teams":
+Jersey number:
+
+----------------------------------------
+#Document within Document
+use --- 3 dashes to embed document within document.
+
+batting_stats.yml
+matches: 200
+innings: 329
+not_outs: 33
+runs: 15921
+
+bowling.stats.yml
+overs: 706.4
+maidens: 83
+wickets: 46
+
+we can combine these two documents with 3 dashes
+
+--- ##Bathing stats
+matches: 200
+innings: 329
+not_outs: 33
+runs: 15921
+
+--- ## Bowling stats
+overs: 706.4
+maidens: 83
+wickets: 46
+
+we downloaded document.yaml file.
+
+-------------------
+
+we wrote read_yaml.py file
+
+import yaml
+
+yaml_file = 'car.yaml'
+
+with open(yaml_file, encoding="utf-8") as file:
+    data = yaml.load(file, loader=yaml.FullLoader)
+
+    for keys, values in data.items():
+        #key:keyname, value
+        print("key: ", keys, "\t value:", values, "\t type:", type(values) )
+
+Part 4 Exercise
+we wrote sachin.yaml file.
+sachin_read_yaml.py we prepared
+
+----
+inside of file
+
+#Profile of cricketere Sachin Tendulkar
+
+#https://www.espncricinfo.com/cricketers/sachin-tendulkar-35320
+
+player_name: Sachin Tendulkar
+player_country: India
+primary_role: Top Order Batter
+International_Career: 1989-2013
+
+#Strings
+
+full_name: "Sachin Ramesh Tendulkar"
+born: !!timestamp 1973-04-24
+age: !!int 50
+nicknames: ['Tendlya', 'Little Master']
+batting_style: Right hand bat
+bowling_style:
+   - Right arm offbreak
+   - Legbreak Googly
+
+height: !!float 5.5
+
+player_description: |
+   Sachin Tendulkar was the most complete batter of his time, the most prolific run-maker of all time, and arguably the biggest cricket icon the game has ever known. His batting was based on the purest principles: perfect balance, economy of movement, precision in stroke-making, and that intangible quality given only to genius batters - anticipation. If he didn't have a signature stroke (though the upright, back-foot punch comes close) it was because he was proficient at so many and could pull them out at will. There were no apparent weaknesses in Tendulkar's game. He could score all around the wicket, off both feet, could temper his game to suit every situation, and made runs in all parts of the world, in all conditions. Some of his finest performances came against Australia, the dominant team of his era. His century as a 19-year-old on a lightning-fast pitch at the WACA is considered one of the best innings ever to have been played in that country. A few years later he received the ultimate compliment from the ultimate batter: Don Bradman confided to his wife that Tendulkar reminded him of himself. Blessed with the keenest of cricket minds, and driven by a loathing for defeat, Tendulkar established his greatness early. He was only 16 when he made his Test debut, and was hit in the face by Waqar Younis in that game, but continued to bat. His first Test hundred, a match-saving one at Old Trafford, came when he was 17, and he had 16 Test hundreds before he turned 25. In 2000 he became the first batter to have scored 50 international hundreds, in 2008 he passed Brian Lara as the leading Test run-scorer, and in the years after, he went past 13,000 Test runs, 30,000 international runs, and 50 Test hundreds. He holds the record for most hundreds in both Tests and ODIs - remarkable, considering he didn't score his first ODI hundred until his 79th match. At just under 37 years of age, he made the first double-century in one-day cricket. In 2012, a month short of his 39th birthday, he became the first player to score 100 international centuries, which, like Bradman's batting average, might be a mark that lasts for ever. Later that year, though, he announced his retirement from ODIs after a disappointing 18 months in international cricket. And on November 16, 2013, he retired from Test cricket after a memorable 200th Test, against West Indies. Tendulkar's considerable achievements seem greater still when looked at in the light of the burden of expectation he had to bear from his adoring but somewhat unreasonable followers, who were prone to regarding anything less than a hundred in every innings as a failure. He still remains, by a distance, the most worshipped cricketer in the world.
+
+career_averages:
+   - overview:
+      span: 1989-2013
+      matches: 200
+      innings: 329
+      no: 33
+      runs: 15921
+      hs: 248
+   - "vs Team":
+     - "vs Australia":
+         span: 1991-2013
+         matches: 39
+         innings: 74
+         no: 8
+         runs: 3630
+         hs: 241
+     - "vs Bangladesh":
+         span: 1991-2013
+         matches: 39
+         innings: 74
+         no: 8
+         runs: 3630
+         hs: 241
+
+
+----
+python3 sachin_read_yaml.py
+
+Hands on exercise 02
+
+define a player using JSON document
+
+we use api-football.com
+Player menu
+https://www.api-football.com/documentation-v3#tag/Players/operation/get-players
+
+we copied response sample for 200
+
+-------------------------
+{
+"get": "players",
+"parameters": {
+"id": "276",
+"season": "2019"
+},
+"errors": [ ],
+"results": 1,
+"paging": {
+"current": 1,
+"total": 1
+},
+"response": [
+{
+"player": {
+"id": 276,
+"name": "Neymar",
+"firstname": "Neymar",
+"lastname": "da Silva Santos Júnior",
+"age": 28,
+"birth": {
+"date": "1992-02-05",
+"place": "Mogi das Cruzes",
+"country": "Brazil"
+},
+"nationality": "Brazil",
+"height": "175 cm",
+"weight": "68 kg",
+"injured": false,
+"photo": "https://media.api-sports.io/football/players/276.png"
+},
+"statistics": [
+{
+"team": {
+"id": 85,
+"name": "Paris Saint Germain",
+"logo": "https://media.api-sports.io/football/teams/85.png"
+},
+"league": {
+"id": 61,
+"name": "Ligue 1",
+"country": "France",
+"logo": "https://media.api-sports.io/football/leagues/61.png",
+"flag": "https://media.api-sports.io/flags/fr.svg",
+"season": 2019
+},
+"games": {
+"appearences": 15,
+"lineups": 15,
+"minutes": 1322,
+"number": null,
+"position": "Attacker",
+"rating": "8.053333",
+"captain": false
+},
+"substitutes": {
+"in": 0,
+"out": 3,
+"bench": 0
+},
+"shots": {
+"total": 70,
+"on": 36
+},
+"goals": {
+"total": 13,
+"conceded": null,
+"assists": 6,
+"saves": 0
+},
+"passes": {
+"total": 704,
+"key": 39,
+"accuracy": 79
+},
+"tackles": {
+"total": 13,
+"blocks": 0,
+"interceptions": 4
+},
+"duels": {
+"total": null,
+"won": null
+},
+"dribbles": {
+"attempts": 143,
+"success": 88,
+"past": null
+},
+"fouls": {
+"drawn": 62,
+"committed": 14
+},
+"cards": {
+"yellow": 3,
+"yellowred": 1,
+"red": 0
+},
+"penalty": {
+"won": 1,
+"commited": null,
+"scored": 4,
+"missed": 1,
+"saved": null
+}
+}
+]
+}
+]
+}
+
+--------------------
+we created football.json file and pasted inside.
+
+football.yaml
+
+football_read_yaml.py we changed readable file name to football.yaml
+
+--------------
+
+get: players
+parameters:
+   - id: 276
+     season: 2019
+errors: []
+results: 1
+paging:
+   current: 1
+   total: 1
+
+response:
+   - player:
+      id : 276
+      name: Neymar
+      firstname: Neymar
+      lastname: da Silva Santos Junior
+      age: 29
+      birth:
+       date: !!timestamp 1992-02-05
+       place: Mogi das Cruzes
+       country: Brazil
+
+      nationality: Brazil
+      height: 175 cm
+      weight: 68 kg
+      injured: False
+      photo: "https://media.api-sports.io/football/players/276.png" 
+
+     statistics:
+      - team:
+         id: 85
+         name: Paris Saint German
+         logo: "https://media.api-sports.ip/football/teams/85.png"
+
+        league:
+         id: 61
+         name: Ligue 1
+         country: France
+         logo: "https://media.api-sports.io/football"
+         flag: "https://media.api-sports.ip/flags/fr"
+         season: 2019
+
+        games:
+         appearances: 15
+         lineups: 15
+         minutes: 1322
+         number: 
+         position: Attacker
+         rating: 8.053333
+         captain: False
+
+        substitutes:
+         in: 0
+         out: 3
+         bench: 0
+
+        shots:
+         total: 70
+         on: 36
+        goals:
+         total: 13
+         conceded:
+         assists: 6
+         saves: 0 
+        passes:
+         total: 704
+         key: 39
+         accuracy: 79
+        tackles:
+         total: 13
+         blocks: 0
+         interceptions: 4
+
+        duels:
+         total:
+         won:
+        dribbles:
+         attempts: 143
+         success: 88
+         past:
+
+        fouls:
+         drawn: 62
+         commited: 14
+
+        cards:
+         yellow: 3
+         yellowred: 1
+         red: 0
+        penalty:
+         won: 1
+         commited: 
+         scored: 4
+         missed: 1
+         saved: 
+
+----------------
+python3 football_read_yaml.py
+
+Part 5
+main_1.py code as below
+
+import yaml
+
+filename = 'sachin.yaml'
+
+with open(filename) as f:
+    data = yaml.load(f, loader=yaml.FullLoader)
+
+    for keys, values in data.items():
+        print(keys, "---->", values, "---->", type(values))
+
+
+python3 main_1.py
+
+write_yaml.py
+
+there is json code.
+
+print(yaml.dump(data))
+
+f = open("generated.yml","w")
+f.write(yaml.dump(data))
+f.close()
+
+generated.yml file is generated after run write_yaml.py 
+
+read multiple streams python file
+
+import yaml
+
+filename = 'document.yml'
+
+with open(filename) as f:
+    #data = yaml.load(f, Loader = yaml.FullLoader)
+    data = yaml.load_all(f, Loader = yaml.FullLoader)
+    for streams in data:
+        for keys, values in streams.items():
+            print(keys , "---->", values , "----->" , type(values))
+
+we can read more than one file with this code.
+
+Interview questions
+The following are some of the common interview questions in YAML
+
+
+Can you explain the basic structure of a YAML file?
+How do you define a scalar value in YAML?
+How do you define a list or array in YAML?
+How do you define a dictionary or map in YAML?
+What is the difference between using single and double quotes in YAML?
+How do you include comments in a YAML file?
+How do you define a multi-line string in YAML?
+Can you give an example of how to use YAML to configure a software application?
+How does YAML handle whitespace and indentation?
+
+
+
+
+
+
+
+
+
+
+
+
+
