@@ -1,0 +1,100 @@
+---
+#document 1
+# This is a yaml document that will define a car
+
+#This document has multiple lines of comment
+# - line 1
+# - line 2
+# - line 3
+
+# Mappings
+vehicle_type: "car"
+wheels: 4
+car_type: "sedan"
+
+# Scalars
+
+vendor_name: Mercedes Benz
+dealer_name: XYZ Car sales company pvt. ltd.
+address: "Some street, some city, \n some state, \n XYZ Country -3000"
+address: 'Some street, some city, \n some state, \n XYZ Country -3000'
+"" shows special characters but '' not shows
+
+#More scalars
+
+#use case - output should be a single line without any return
+address: 
+   "Some street, some city, 
+   some state, 
+   XYZ Country 
+   3000"
+
+# preformatted data
+address2: |
+   'Some street
+   some city, 
+   some state, 
+   XYZ Country
+   3000'
+
+sample_html: |
+   <html>
+      <head>
+         <title> this is the title</title>
+      </head>
+   </html>
+
+
+document_name: "car.yaml" #this is the document name
+
+#integers
+wheels: 4
+doors: 5
+height: 1.2
+weight: 2.5
+
+
+infinity: -.inf  #infinity
+nothing: .nan    #divided by 0
+
+#Booleans:True/Yes &False/No
+
+this_is_true: True
+this_is_also_true: Yes
+this_is_false: False
+this_is_also_false: No
+
+this_is_true: true
+this_is_also_true: yes
+this_is_false: false
+this_is_also_false: no
+
+
+
+---
+# document 2
+
+#Sequence
+teams:
+ - India
+ - Mumbai
+ - Yorkshire
+ - Mumbai Indians
+ - Asia XI
+
+skills: [batting, bowling, fielding]
+
+nested seq
+skills: 
+   - batting:
+      - batting_style:
+         - right and batsman
+         - opening batsman
+   - bowling:
+      - right arm off spin
+      - googly bowler
+   - fielding:
+      - slips
+      - long off
+
+
